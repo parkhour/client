@@ -8,16 +8,17 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "expo": "^33.0.0",
+    "expo-location": "~5.0.1",
     "native-base": "^2.12.1",
     "react": "16.8.3",
-    "axios": "^0.18.0",
     "react-dom": "^16.8.6",
     "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
-    "react-native-web": "^0.11.4",
-    "react-navigation": "^3.11.0",
     "react-native-maps-directions": "^1.6.0",
     "react-native-open-maps": "^0.3.3",
+    "react-native-web": "^0.11.4",
+    "react-navigation": "^3.11.0",
     "react-redux": "^7.1.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0"

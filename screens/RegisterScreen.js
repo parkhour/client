@@ -43,11 +43,11 @@ const RegisterScreen = (props) => {
 
                 <View style={{justifyContent : 'center', alignItems:"center"}}>
                 <Item rounded style={{ padding:5, marginVertical:7, height:40, width: Dimensions.get("window").width/1.5, backgroundColor: "#f1ece1" }}>
-                  <Input placeholder="Email" />
+                  <Input style={{...styles.generalText}} placeholder="Email" />
                 </Item>
                 
                 <Item rounded style={{padding:5, height:40, width: Dimensions.get("window").width/1.5, backgroundColor: "#f1ece1" }}>
-                  <Input placeholder="Password" />
+                  <Input style={{...styles.generalText}} placeholder="Password" />
                 </Item>
                 <View style={{justifyContent : 'center',  marginTop:15, alignItems:"center"}}>
                 <ButtonGeneral text={"Login"}></ButtonGeneral>
