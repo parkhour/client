@@ -7,7 +7,7 @@ import * as Permissions from "expo-permissions";
 import { MapView } from "expo";
 import { Container } from "native-base";
 
-const API_KEY = 'AIzaSyD3iG_Hv1BkdZy-xD9tqt8-jHMJTao1iZU'
+const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY
 
 //  INI PIM BRO
 // {

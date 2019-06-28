@@ -24,29 +24,30 @@ import {
   Body,
   Icon
 } from "native-base";
-const API_KEY = "AIzaSyD3iG_Hv1BkdZy-xD9tqt8-jHMJTao1iZU";
+const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
+import database from '../config.js'
 
 const listParkingSpace = [
   {
-    parkId : '01',
+    id : '01',
     name: "Pondok Indah Mall",
     latlong: "6.2697656,106.7824",
     image: "https://inugo.com/wp-content/uploads/2018/04/final-mall@2x.png"
   },
   {
-    parkId : '02',
+    id : '02',
     name: "Kota Kasablanka",
     latlong: "6.2241,106.8432",
     image: "https://inugo.com/wp-content/uploads/2018/04/final-mall@2x.png"
   },
   {
-    parkId : '03',
+    id : '03',
     name: "Grand Indonesia",
     latlong: "6.1951,106.8209",
     image: "https://inugo.com/wp-content/uploads/2018/04/final-mall@2x.png"
   },
   {
-    parkId : '04',
+    id : '04',
     name: "Gandaria City",
     latlong: "6.2442,106.7835",
     image: "https://inugo.com/wp-content/uploads/2018/04/final-mall@2x.png"
@@ -73,13 +74,21 @@ export default class ListingScreen extends Component {
     }
   }
 
-  //   componentDidUpdate(prevProps, prevState) {
-  //       if (prevState.locationReady == false && this.state.locationReady == true) {
-  //           let result = listParkingSpace.map(async (space) => {
-  //             await this.getETAAsync(space.latlong)
-  //           })
-  //       }
-  //   }
+  reserveParkSpace = async (id) => {
+    database.ref('test')
+    .on('value', function(snapshot){
+        snapshot.val().parkingLot[id].forEach(async (space, idx) => {
+            if (space.status == 'empty') {
+                // CHANGE PARK SPACE STATUS INTO RESERVED AND SEND THE USER ID FROM STORE
+                await database.ref(`/test/parkingLot/${id}/${idx}`).update({status : "reserved", uid : 'DARI STORE YA'})
+
+                // CREATE RESERVATION AS WAITING AND SEND THE USER ID FROM STORE
+                await database.ref(`/test/reservations/randomDULU`).set({parkId : id, status : 'waiting', uid : 'DARI STORE YA'})
+            }
+        })
+    })
+  }
+
 
   getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -146,7 +155,7 @@ export default class ListingScreen extends Component {
         {this.state.possibleParkingLocations &&
           this.state.possibleParkingLocations.map((space, idx) => {
             return (
-              <TouchableOpacity onPress={() => alert(space)} key={idx}>
+              <TouchableOpacity onPress={() => this.reserveParkSpace(space.id)} key={idx}>
                 <Text>{JSON.stringify(space.name)}</Text>
               </TouchableOpacity>
             );
