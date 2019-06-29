@@ -41,8 +41,16 @@ const RegisterScreen = (props) => {
       }
   }
 
+  const loadLocalFont = async () => {
+    await Font.loadAsync({
+      lgc_reg: require("../assets/louis_george_caf/Louis_George_Cafe.ttf"),
+      helve_reg: require("../assets/coolvetica/coolvetica_condensed_rg.ttf")
+    });
+    await setFontLoad(true);
+  };
 
   useEffect(() => {
+    loadLocalFont()
      cekAsyncStorage()
     console.log(async)
     if (async != undefined) {
@@ -72,8 +80,8 @@ const RegisterScreen = (props) => {
       }
     })
       .then((docs) => {
-        setAsyncStorage(data.user.uid)
-        props.loginFirebase(data)
+        setAsyncStorage(user.user.uid)
+        props.loginFirebase(user)
         navigate('LoginScreen')
 
       })

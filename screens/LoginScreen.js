@@ -30,7 +30,6 @@ const LoginScreen = (props) => {
         setAsync(data)
       }
     } catch (error) {
-
     }
   }
 
@@ -40,7 +39,6 @@ const LoginScreen = (props) => {
     } catch (error) {
       // Error saving data
     }
-    
   }
 
   
@@ -52,7 +50,6 @@ const LoginScreen = (props) => {
     });
     await setFontLoad(true);
   };
-
 
 
   const loginFunc = (props) => {
