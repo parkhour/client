@@ -6,9 +6,10 @@ import * as Font from "expo-font";
 import { bindActionCreators } from 'redux'
 import ButtonGeneral from "../components/Button";
 import { withNavigation } from "react-navigation";
+// import config from '../config/firebaseConfig'
 import firebase from 'firebase'
 import { connect } from 'react-redux';
-import db from '../config'
+import db from '../config/firebaseConfig'
 import { loginFirebase } from '../store/actions/authActions'
 
 
@@ -117,13 +118,13 @@ const LoginScreen = (props) => {
                 <Text style={{ ...styles.textTop }}>PARKHOUR</Text>
               </Row>
 
-                <View style={{justifyContent : 'center', alignItems:"center"}}>
-                <Item rounded style={{ padding:5, marginVertical:7, height:40, width: Dimensions.get("window").width/1.5, backgroundColor: "#f1ece1" }}>
-                  <Input style={{...styles.generalText}} placeholder="Email" />
+              <View style={{ justifyContent: 'center', alignItems: "center" }}>
+                <Item rounded style={{ padding: 5, marginVertical: 7, height: 40, width: Dimensions.get("window").width / 1.5, backgroundColor: "#f1ece1" }}>
+                  <Input placeholder="Email" onChangeText={(text) => setEmail(text)} />
                 </Item>
-                
-                <Item rounded style={{padding:5, height:40, width: Dimensions.get("window").width/1.5, backgroundColor: "#f1ece1" }}>
-                  <Input style={{...styles.generalText}} placeholder="Password" />
+
+                <Item rounded style={{ padding: 5, height: 40, width: Dimensions.get("window").width / 1.5, backgroundColor: "#f1ece1" }}>
+                  <Input type="password" placeholder="Password" onChangeText={(text) => setPassword(text)} secureTextEntry={true} />
                 </Item>
                 <View style={{ justifyContent: 'center', marginTop: 15, alignItems: "center" }}>
                   <ButtonGeneral passFunction={loginFunc} text={"Login"}></ButtonGeneral>

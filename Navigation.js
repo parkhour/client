@@ -40,8 +40,15 @@ const ReservationStackNavigator = createStackNavigator({
       headerTransparent: true
     })
   },
-  RegisterScreen : {
-    screen : RegisterScreen,
+  LoginScreen: {
+    screen: LoginScreen,
+    navigationOptions: ({ navigation }) => ({
+      headerTransparent: true
+    })
+
+  },
+  RegisterScreen: {
+    screen: RegisterScreen,
     navigationOptions: ({ navigation }) => ({
       headerTransparent: true,
       headerLeft: null,
@@ -56,6 +63,8 @@ const ReservationStackNavigator = createStackNavigator({
     })
   }
 });
+
+
 
 const BottomNavigatorConfig = {
   tabBarOptions: {

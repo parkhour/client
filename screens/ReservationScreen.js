@@ -6,7 +6,6 @@ import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import { MapView } from "expo";
 import { Container } from "native-base";
-
 import API_KEY from '../keys.js'
 
 //  INI PIM BRO
