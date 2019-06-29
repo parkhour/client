@@ -9,8 +9,10 @@ import HomeScreen from "./screens/HomeScreen";
 import ReservationScreen from "./screens/ReservationScreen";
 import ListingScreen from "./screens/ListingScreen";
 import LoginScreen from "./screens/LoginScreen";
-import RegisterScreen from "./screens/RegisterScreen"
+import RegisterScreen from "./screens/RegisterScreen";
+import SuccessReserveScreen from "./screens/SuccessReserveScreen";
 import SplashScreen from "./screens/SplashScreen"
+
 
 const ReservationStackNavigator = createStackNavigator({
   LoginScreen : {
@@ -25,7 +27,9 @@ const ReservationStackNavigator = createStackNavigator({
   HomeScreen: {
     screen: HomeScreen,
     navigationOptions: ({ navigation }) => ({
-      headerTransparent: true
+      headerTransparent: true,
+      headerLeft: null,
+
     })
   },
   ListingScreen: {
@@ -37,7 +41,8 @@ const ReservationStackNavigator = createStackNavigator({
   ReservationScreen: {
     screen: ReservationScreen,
     navigationOptions: ({ navigation }) => ({
-      headerTransparent: true
+      headerTransparent: false
+
     })
   },
   LoginScreen: {
@@ -55,6 +60,12 @@ const ReservationStackNavigator = createStackNavigator({
       tabBarVisible: true
     })
 
+  },
+  SuccessReserveScreen : {
+    screen : SuccessReserveScreen,
+    navigationOptions: ({ navigation }) => ({
+      headerLeft: null,
+      tabBarVisible: true
   },
   SplashScreen: {
     screen: SplashScreen,
