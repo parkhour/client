@@ -8,6 +8,7 @@ import ButtonGeneral from "../components/Button";
 import { withNavigation } from "react-navigation";
 import firebase from 'firebase'
 import { connect } from 'react-redux';
+import db from '../config'
 import { loginFirebase } from '../store/actions/authActions'
 
 
@@ -38,7 +39,6 @@ const LoginScreen = (props) => {
     });
     await setFontLoad(true);
   };
-
 
 
   const loginFunc = (props) => {
