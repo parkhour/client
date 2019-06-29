@@ -29,7 +29,7 @@ import {
 } from "native-base";
 import API_KEY from "../keys.js";
 
-import database from "../config.js";
+// import database from "../config.js";
 
 const listParkingSpace = [
   {
