@@ -21,28 +21,16 @@ const LoginScreen = (props) => {
   const [password, setPassword] = useState('')
   const [async, setAsync] = useState('')
 
-  const cekAsyncStorage = async () => {
-    try {
-      const data = await AsyncStorage.getItem('token')
-      if (data !== null) {
-        console.log(data)
-        setAsync(data)
-      }
-    } catch (error) {
-
-    }
-  }
-
   const setAsyncStorage = async (value) => {
     try {
       await AsyncStorage.setItem('token', value);
     } catch (error) {
       // Error saving data
     }
-    
+
   }
 
-  
+
 
   const loadLocalFont = async () => {
     await Font.loadAsync({
@@ -60,41 +48,37 @@ const LoginScreen = (props) => {
       .then(user => {
         if (user) {
           onLoginSuccess(user)
-          navigate('HomeScreen')
+          navigate('App')
         }
       })
       .catch(error => {
         switch (error.code) {
           case 'auth/invalid-email':
-            console.log('Invalid email address format.');
+           alert('Invalid email address format.');
             break;
           case 'auth/user-not-found':
           case 'auth/wrong-password':
-            console.log('Invalid email address or password');
+           alert('Invalid email address or password');
             break;
           default:
-            console.log('Check your internet connection');
+           alert('Check your internet connection');
         }
 
       })
   }
-  const onLoginSuccess = (data) => {
+
+
+
+  const onLoginSuccess = (value) => {
     setEmail('')
     setPassword('')
-    console.log(data.user.uid, AsyncStorage)
-    setAsyncStorage(data.user.uid)
-    props.loginFirebase(data)
+    setAsyncStorage(value.user.uid)
+    props.loginFirebase(value)
   }
 
   useEffect(() => {
-    cekAsyncStorage()
     loadLocalFont();
-    console.log(async)
-    if (async != '') {
-      navigate('HomeScreen')
-    }
-
-  }, [async]);
+  });
 
   return fontLoad ? (
     <Container style={{ ...styles.bgnya, flex: 1 }}>
