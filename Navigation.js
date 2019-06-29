@@ -9,8 +9,9 @@ import HomeScreen from "./screens/HomeScreen";
 import ReservationScreen from "./screens/ReservationScreen";
 import ListingScreen from "./screens/ListingScreen";
 import LoginScreen from "./screens/LoginScreen";
-import RegisterScreen from "./screens/RegisterScreen";
 import SuccessReserveScreen from "./screens/SuccessReserveScreen";
+import RegisterScreen from "./screens/RegisterScreen"
+import SplashScreen from "./screens/SplashScreen"
 
 const ReservationStackNavigator = createStackNavigator({
   LoginScreen : {
@@ -57,6 +58,12 @@ const ReservationStackNavigator = createStackNavigator({
       headerLeft: null,
       tabBarVisible: true
     })
+  },
+  SplashScreen: {
+    screen: SplashScreen,
+    navigationOptions: ({ navigation }) => ({
+      headerTransparent: true
+    })
   }
 });
 
@@ -73,6 +80,17 @@ const BottomNavigatorConfig = {
 
 const AppNavigator = createBottomTabNavigator(
   {
+    SplashScreen:{
+      screen: SplashScreen,
+    },
+    LoginScreen: {
+      screen: LoginScreen,
+      navigationOptions: () => ({
+        tabBarIcon: ({ tintColor }) => (
+          <FAwesomeIcon name="search" color={tintColor} size={25} />
+        )
+      })
+    },
     HomeScreen: {
       screen: ReservationStackNavigator,
       navigationOptions: () => ({

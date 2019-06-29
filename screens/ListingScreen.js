@@ -30,7 +30,7 @@ import {
 import { withNavigation } from "react-navigation";
 import API_KEY from "../keys.js";
 
-import database from "../config.js";
+// import database from "../config.js";
 
 const listParkingSpace = [
   {
