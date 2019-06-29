@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, ImageBackground, Dimensions, AsyncStorage } from "react-native";
+import { StyleSheet, ImageBackground, Dimensions, AsyncStorage, ActivityIndicator, Image } from "react-native";
 import { Container, Text, Header, Content, Item, Input, View } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import * as Font from "expo-font";
@@ -9,7 +9,6 @@ import { withNavigation } from "react-navigation";
 import firebase from 'firebase'
 import { connect } from 'react-redux';
 import { loginFirebase } from '../store/actions/authActions'
-
 
 
 
@@ -54,14 +53,14 @@ const LoginScreen = (props) => {
       .catch(error => {
         switch (error.code) {
           case 'auth/invalid-email':
-           alert('Invalid email address format.');
+            alert('Invalid email address format.');
             break;
           case 'auth/user-not-found':
           case 'auth/wrong-password':
-           alert('Invalid email address or password');
+            alert('Invalid email address or password');
             break;
           default:
-           alert('Check your internet connection');
+            alert('Check your internet connection');
         }
 
       })
@@ -95,9 +94,13 @@ const LoginScreen = (props) => {
         >
           <Grid>
             <Col>
-              <Text style={{ ...styles.textTop }}>PXH</Text>
-              <Row size={0.3} style={{ ...styles.center }}>
-                <Text style={{ ...styles.textTop }}>PARKHOUR</Text>
+              <Text style={{ ...styles.textTop }}></Text>
+              <Row size={0.3} style={{ ...styles.center, }}>
+                <Image
+                  resizeMode="contain"
+                  style={{ height: 230,
+                  marginLeft:-10 }}
+                  source={require("../assets/ph_logo.png")} />
               </Row>
 
               <View style={{ justifyContent: 'center', alignItems: "center" }}>
@@ -120,7 +123,18 @@ const LoginScreen = (props) => {
       </ImageBackground>
     </Container>
   ) : (
-      <Text>Font error blm load</Text>
+      <View style={{
+        position: "absolute",
+        flex: 8,
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
     );
 };
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, ImageBackground, Dimensions,AsyncStorage } from "react-native";
+import { StyleSheet, ImageBackground, Dimensions, AsyncStorage,ActivityIndicator,Image } from "react-native";
 import { Container, Text, Header, Content, Item, Input, View } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import * as Font from "expo-font";
@@ -19,49 +19,53 @@ const RegisterScreen = (props) => {
   const [fontLoad, setFontLoad] = useState(false);
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [passwordConfirm, setPasswordConfirm] = useState('')
   const [async, setAsync] = useState()
 
+  const loadLocalFont = async () => {
+    await Font.loadAsync({
+      lgc_reg: require("../assets/louis_george_caf/Louis_George_Cafe.ttf"),
+      helve_reg: require("../assets/coolvetica/coolvetica_condensed_rg.ttf")
+    });
+    await setFontLoad(true);
+  };
 
-  const cekAsyncStorage = async () => {
+
+  const setAsyncStorage = async (token) => {
     try {
-      const data = await AsyncStorage.getItem('token')
-      if (data !== null) {
-        setAsync(data)
-      }
+      await AsyncStorage.setItem('token', token);
     } catch (error) {
 
     }
   }
 
-  const setAsyncStorage = async(token) => {
-      try {
-        await AsyncStorage.setItem('token', token);
-      } catch (error) {
-        
-      }
-  }
-
 
   useEffect(() => {
-     cekAsyncStorage()
-    console.log(async)
-    if (async != undefined) {
-      navigate('HomeScreen')
-    }
+    loadLocalFont()
 
-  }, [async]);
+  });
 
   const RegisterFunc = () => {
-    firebase.auth().createUserWithEmailAndPassword(email, password)
+    console.log(passwordConfirm,'sdsdsdsd',password)
+    if(passwordConfirm===password){
+      firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(result => {
         if (result) {
           onRegisterSuccess(result)
         }
-      });
+      })
+      .catch((error) => {
+        alert(error.code)
+      })
+    }else{
+      alert('password tidak sama')
+    }
+
   }
+
   const onRegisterSuccess = (user) => {
     console.log(user.uid)
-    db.database().ref('/test/user').update({
+    db.ref('/test/user').update({
       [user.user.uid]: {
         email: user.user.email,
         res_history: '',
@@ -72,10 +76,9 @@ const RegisterScreen = (props) => {
       }
     })
       .then((docs) => {
-        setAsyncStorage(data.user.uid)
-        props.loginFirebase(data)
-        navigate('LoginScreen')
-
+        setAsyncStorage(user.user.uid)
+        props.loginFirebase(user)
+        navigate('App')
       })
       .catch((err) => {
         console.log(err)
@@ -102,9 +105,13 @@ const RegisterScreen = (props) => {
         >
           <Grid>
             <Col>
-              <Text style={{ ...styles.textTop }}>PXH</Text>
+              <Text style={{ ...styles.textTop }}></Text>
               <Row size={0.3} style={{ ...styles.center }}>
-                <Text style={{ ...styles.textTop }}>PARKHOUR</Text>
+              <Image
+                  resizeMode="contain"
+                  style={{ height: 230,
+                  marginLeft:-10 }}
+                  source={require("../assets/ph_logo.png")} />
               </Row>
 
               <View style={{ justifyContent: 'center', alignItems: "center" }}>
@@ -112,8 +119,11 @@ const RegisterScreen = (props) => {
                   <Input placeholder="Email" onChangeText={(text) => setEmail(text)} />
                 </Item>
 
-                <Item rounded style={{ padding: 5, height: 40, width: Dimensions.get("window").width / 1.5, backgroundColor: "#f1ece1" }}>
+                <Item rounded style={{ padding: 5, height: 40, marginVertical: 7, width: Dimensions.get("window").width / 1.5, backgroundColor: "#f1ece1" }}>
                   <Input placeholder="Password" onChangeText={(text) => setPassword(text)} secureTextEntry={true} />
+                </Item>
+                <Item rounded style={{ padding: 5, height: 40, marginVertical: 7, width: Dimensions.get("window").width / 1.5, backgroundColor: "#f1ece1" }}>
+                  <Input placeholder="Password" onChangeText={(text) => setPasswordConfirm(text)} secureTextEntry={true} />
                 </Item>
                 <View style={{ justifyContent: 'center', marginTop: 15, alignItems: "center" }}>
                   <ButtonGeneral passFunction={RegisterFunc} text={"Register"}></ButtonGeneral>
@@ -127,7 +137,18 @@ const RegisterScreen = (props) => {
       </ImageBackground>
     </Container>
   ) : (
-      <Text>Font error blm load</Text>
+    <View style={{
+      position: "absolute",
+      flex: 8,
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}>
+      <ActivityIndicator size="large" color="#0000ff" />
+    </View>
     );
 };
 
