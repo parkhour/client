@@ -63,3 +63,13 @@ export const clearAuthError = () => {
         })
     }
 }
+
+export const loginFirebase = (userDetail) => {
+  console.log('ini di action')
+  return (dispatch, getState) => {
+    dispatch({
+        type: 'LOGIN_SUCCESS_FIREBASE',
+        payload: userDetail
+    })
+}
+};
