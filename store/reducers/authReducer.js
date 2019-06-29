@@ -1,6 +1,7 @@
 const initState = {
     authError: null,
-    loggedInUser: null
+    loggedInUser: null,
+    isLogin:false
   }
   
   const authReducer = (state = initState, action) => {
@@ -25,12 +26,14 @@ const initState = {
           authError: 'Login failed'
         }
   
-      case 'LOGIN_SUCCESS':
-        return {
-          ...state,
-          authError: null,
-          loggedInUser: action.payload
-        }
+        case 'LOGIN_SUCCESS_FIREBASE':
+          console.log('masuk sini')
+          return {
+            ...state,
+            authError: null,
+            loggedInUser: action.payload,
+            isLogin:true
+          }  
   
       case 'SIGNOUT_SUCCESS':
         return {

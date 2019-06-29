@@ -1,14 +1,51 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, ImageBackground, Dimensions } from "react-native";
+import { StyleSheet, ImageBackground, Dimensions, AsyncStorage } from "react-native";
 import { Container, Text, Header, Content, Item, Input, View } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import * as Font from "expo-font";
+import { bindActionCreators } from 'redux'
 import ButtonGeneral from "../components/Button";
 import { withNavigation } from "react-navigation";
+// import config from '../config/firebaseConfig'
+import firebase from 'firebase'
+import { connect } from 'react-redux';
+import db from '../config/firebaseConfig'
+import { loginFirebase } from '../store/actions/authActions'
+
+
+
 
 const LoginScreen = (props) => {
-    const { navigate } = props.navigation
+  const { isLogin, ...rest } = props
+  const { navigate } = props.navigation
   const [fontLoad, setFontLoad] = useState(false);
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [async, setAsync] = useState('')
+
+  const cekAsyncStorage = async () => {
+    try {
+      const data = await AsyncStorage.getItem('token')
+      if (data !== null) {
+        console.log(data)
+        setAsync(data)
+      }
+    } catch (error) {
+
+    }
+  }
+
+  const setAsyncStorage = async (value) => {
+    try {
+      await AsyncStorage.setItem('token', value);
+    } catch (error) {
+      // Error saving data
+    }
+    
+  }
+
+  
+
   const loadLocalFont = async () => {
     await Font.loadAsync({
       lgc_reg: require("../assets/louis_george_caf/Louis_George_Cafe.ttf"),
@@ -17,9 +54,49 @@ const LoginScreen = (props) => {
     await setFontLoad(true);
   };
 
+
+
+  const loginFunc = (props) => {
+    console.log(email, password)
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(user => {
+        if (user) {
+          onLoginSuccess(user)
+          navigate('HomeScreen')
+        }
+      })
+      .catch(error => {
+        switch (error.code) {
+          case 'auth/invalid-email':
+            console.log('Invalid email address format.');
+            break;
+          case 'auth/user-not-found':
+          case 'auth/wrong-password':
+            console.log('Invalid email address or password');
+            break;
+          default:
+            console.log('Check your internet connection');
+        }
+
+      })
+  }
+  const onLoginSuccess = (data) => {
+    setEmail('')
+    setPassword('')
+    console.log(data.user.uid, AsyncStorage)
+    setAsyncStorage(data.user.uid)
+    props.loginFirebase(data)
+  }
+
   useEffect(() => {
+    cekAsyncStorage()
     loadLocalFont();
-  }, []);
+    console.log(async)
+    if (async != '') {
+      navigate('HomeScreen')
+    }
+
+  }, [async]);
 
   return fontLoad ? (
     <Container style={{ ...styles.bgnya, flex: 1 }}>
@@ -37,32 +114,32 @@ const LoginScreen = (props) => {
           <Grid>
             <Col>
               <Text style={{ ...styles.textTop }}>PXH</Text>
-              <Row size={0.3} style={{ ...styles.center}}>
+              <Row size={0.3} style={{ ...styles.center }}>
                 <Text style={{ ...styles.textTop }}>PARKHOUR</Text>
               </Row>
 
-                <View style={{justifyContent : 'center', alignItems:"center"}}>
-                <Item rounded style={{ padding:5, marginVertical:7, height:40, width: Dimensions.get("window").width/1.5, backgroundColor: "#f1ece1" }}>
-                  <Input placeholder="Email" />
+              <View style={{ justifyContent: 'center', alignItems: "center" }}>
+                <Item rounded style={{ padding: 5, marginVertical: 7, height: 40, width: Dimensions.get("window").width / 1.5, backgroundColor: "#f1ece1" }}>
+                  <Input placeholder="Email" onChangeText={(text) => setEmail(text)} />
                 </Item>
-                
-                <Item rounded style={{padding:5, height:40, width: Dimensions.get("window").width/1.5, backgroundColor: "#f1ece1" }}>
-                  <Input placeholder="Password" />
+
+                <Item rounded style={{ padding: 5, height: 40, width: Dimensions.get("window").width / 1.5, backgroundColor: "#f1ece1" }}>
+                  <Input type="password" placeholder="Password" onChangeText={(text) => setPassword(text)} secureTextEntry={true} />
                 </Item>
-                <View style={{justifyContent : 'center',  marginTop:15, alignItems:"center"}}>
-                <ButtonGeneral text={"Login"}></ButtonGeneral>
+                <View style={{ justifyContent: 'center', marginTop: 15, alignItems: "center" }}>
+                  <ButtonGeneral passFunction={loginFunc} text={"Login"}></ButtonGeneral>
                 </View>
 
-                <Text onPress={() => navigate('RegisterScreen')} style={{...styles.generalText, marginVertical : 10}}>Don't have an account?</Text>
-                </View>
+                <Text onPress={() => navigate('RegisterScreen')} style={{ ...styles.generalText, marginVertical: 10 }}>Don't have an account?</Text>
+              </View>
             </Col>
           </Grid>
         </ImageBackground>
       </ImageBackground>
     </Container>
   ) : (
-    <Text>Font error blm load</Text>
-  );
+      <Text>Font error blm load</Text>
+    );
 };
 
 const styles = StyleSheet.create({
@@ -74,7 +151,7 @@ const styles = StyleSheet.create({
     color: "rgb(20,29,86)",
     fontSize: 79
   },
-  generalText : {
+  generalText: {
     fontFamily: "lgc_reg",
     color: "rgb(20,29,86)",
 
@@ -86,4 +163,12 @@ const styles = StyleSheet.create({
   }
 });
 
-export default withNavigation(LoginScreen)
+
+const mapStatetoProps = (state) => {
+  return { isLogin: state.auth.isLogin }
+}
+const mapDispatchToProps = dispatch => bindActionCreators({
+  loginFirebase
+}, dispatch);
+
+export default connect(mapStatetoProps, mapDispatchToProps)(withNavigation(LoginScreen))
