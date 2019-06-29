@@ -6,10 +6,8 @@ import * as Font from "expo-font";
 import { bindActionCreators } from 'redux'
 import ButtonGeneral from "../components/Button";
 import { withNavigation } from "react-navigation";
-// import config from '../config/firebaseConfig'
 import firebase from 'firebase'
 import { connect } from 'react-redux';
-import db from '../config/firebaseConfig'
 import { loginFirebase } from '../store/actions/authActions'
 
 
