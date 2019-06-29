@@ -41,8 +41,16 @@ const RegisterScreen = (props) => {
       }
   }
 
-
-  useEffect(() => {
+  const loadLocalFont = async () => {
+    await Font.loadAsync({
+      lgc_reg: require("../assets/louis_george_caf/Louis_George_Cafe.ttf"),
+      helve_reg: require("../assets/coolvetica/coolvetica_condensed_rg.ttf")
+    });
+    await setFontLoad(true);
+  };
+    
+    useEffect(() => {
+      loadLocalFont()
      cekAsyncStorage()
     console.log(async)
     if (async != undefined) {
@@ -128,8 +136,9 @@ const RegisterScreen = (props) => {
     </Container>
   ) : (
       <Text>Font error blm load</Text>
-    );
-};
+    )
+}
+
 
 const styles = StyleSheet.create({
   bgnya: {

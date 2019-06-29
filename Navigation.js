@@ -13,6 +13,7 @@ import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import SuccessReserveScreen from "./screens/SuccessReserveScreen";
 import SplashScreen from "./screens/SplashScreen"
+import ConfirmOrRejectScreen from "./screens/ConfirmOrRejectScreen"
 
 
 const ReservationStackNavigator = createBottomTabNavigator({
@@ -131,6 +132,14 @@ const AppNavigator = createBottomTabNavigator(
             <FAwesomeIcon name="home" color={tintColor} size={25} />
           )
         })
+    },
+    ConfirmOrRejectScreen: {
+      screen: ConfirmOrRejectScreen,
+      navigationOptions: () => ({
+        tabBarIcon: ({ tintColor }) => (
+          <FAwesomeIcon name="eye" color={tintColor} size={25} />
+        )
+      })
     },
     // ListingScreen: {
     //   screen: ListingScreen,
