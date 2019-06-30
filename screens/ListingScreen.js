@@ -94,58 +94,32 @@ class ListingScreen extends Component {
   // }
 
 
-  reserveParkSpace = async id => {
-    console.log('kesinii');
+  reserveParkSpace = async item => {
+    // AsyncStorage.clear()
     
     try {
-      console.log('berhasil');
-      const token = await AsyncStorage.getItem('token')
-      console.log(token);
-      
+      const token = await AsyncStorage.getItem('token')      
       let { data } = await axios({
         method: 'POST',
         url: `${BASEURL}/reservations`,
         data: {
-          mallId: id,
+          mallId: item.id,
           parkId: 1,
         },
         headers: {
           authorization: token,
         }
       })
-      // ).post(`${BASEURL}/reservations`,  { mallId : id, parkId : 1}, {
-      //   headers : { authorization : token }
-      // })
-      
+      const { navigate } = this.props.navigation
+      await navigate ('SuccessReserveScreen', {property : item, dataMongo : data})
+  
+            
     } catch (error) {
       console.log(error);
       
     }
-    
-     // CREATE RESERVATION AS WAITING AND SEND THE USER ID FROM STORE
-     
-      
-     // CHANGE PARK SPACE STATUS INTO RESERVED AND SEND THE USER ID FROM STORE
+  
 
-
-    // database.ref("test").on("value", function(snapshot) {
-    //   snapshot.val().parkingLot[id].forEach(async (space, idx) => {
-    //     if (space.status == "empty") {
-    //       // CHANGE PARK SPACE STATUS INTO RESERVED AND SEND THE USER ID FROM STORE
-    //       await database
-    //         .ref(`/test/parkingLot/${id}/${idx}`)
-    //         .update({ status: "reserved", uid: token });
-
-    //       // CREATE RESERVATION AS WAITING AND SEND THE USER ID FROM STORE
-    //       await database
-    //         .ref(`/test/reservations/randomDULU`)
-    //         .set({ parkId: id, status: "waiting", uid: token });
-
-          const { navigate } = this.props.navigation
-          // await navigate ('SuccessReserveScreen', {id : id})
-        // }
-      // });
-    // });
   };
 
   getLocationAsync = async () => {
@@ -273,7 +247,7 @@ class ListingScreen extends Component {
                             padding: 15
                           }}
                         >
-                          <Button onPress={() => this.reserveParkSpace(item.id)} style={{ backgroundColor: "rgb(255,207,0)" }}>
+                          <Button onPress={() => this.reserveParkSpace(item)} style={{ backgroundColor: "rgb(255,207,0)" }}>
                             <Text style={{fontWeight : 'bold'}}>Reserve And Go</Text>
                           </Button>
                         </View>
