@@ -98,7 +98,13 @@ class ListingScreen extends Component {
     // AsyncStorage.clear()
     
     try {
-      const token = await AsyncStorage.getItem('token')      
+      const token = await AsyncStorage.getItem('token')     
+      const uiddd = await AsyncStorage.getItem('uid')      
+ 
+      console.log(token, 'ini ambil dr storage');
+      console.log(uiddd, 'ini ambil dr storage22');
+
+      
       let { data } = await axios({
         method: 'POST',
         url: `${BASEURL}/reservations`,

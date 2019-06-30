@@ -2,8 +2,25 @@ import React from "react";
 import { StyleSheet, Image, Dimensions } from "react-native";
 import { View, Text, Container, Card, Content, Body, Left, Button} from "native-base";
 import { Col, Grid, Row } from "react-native-easy-grid";
+import database from '../config'
 
-const ConfirmOrRejectScreen = () => {
+const ConfirmOrRejectScreen = (props) => {
+  const data = props.navigation.state.params.reservation.data
+  const idnya = props.navigation.state.params.reservation.id
+  console.log(props.navigation.state.params.reservation.data);
+  console.log(props.navigation.state.params.reservation.id);
+
+
+  const confirmReservation = async () => {
+    let result = await database.ref(`/test/reservations/${idnya}`).update({status : "confirmed"})
+    let result2 = await database.ref(`/test/parkingLot/${data.mallId}/${data.parkId}`).update({reserved : false, reservationId : ''})
+  }
+
+  const rejectReservation = async () => {
+    let result = await database.ref(`/test/reservations/${idnya}`).update({status : "waiting"})
+    let result2 = await database.ref(`/test/parkingLot/${data.mallId}/${data.parkId}`).update({rejected : true})
+  }
+
   return (
     <Container style={{ padding: 20 }}>
       <Content>
@@ -78,13 +95,13 @@ const ConfirmOrRejectScreen = () => {
         </Card>
         <Container style={{marginTop:15, flexDirection : 'row', textAlign : 'center', alignItems : 'center', alignContent: 'center', justifyContent: 'space-around'}}>
           <Button
-            onPress={() => alert('hehe')}
+            onPress={() => confirmReservation()}
             style={{ width: Dimensions.get("window").width / 3 + 40, textAlign : 'center', alignItems : 'center', alignContent: 'center', textAlign : 'center', backgroundColor: "rgb(255,207,0)" }}
           >
             <Text style={{ fontWeight: "bold" }}>Confirm</Text>
           </Button>
           <Button
-            onPress={() => alert('hehe')}
+            onPress={() => rejectReservation()}
             style={{ width : Dimensions.get("window").width / 3 + 40, textAlign : 'center', backgroundColor: "rgb(32, 36, 61)" }}
           >
             <Text style={{ fontWeight: "bold" }}>Reject</Text>

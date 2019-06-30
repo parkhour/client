@@ -1,5 +1,5 @@
 import React from "react";
-import { ImageBackground, Dimensions, Image, StyleSheet } from "react-native";
+import { ImageBackground, Dimensions, Image, StyleSheet, Platform, Linking} from "react-native";
 import {
   Container,
   Content,
@@ -19,6 +19,21 @@ const SuccessReserveScreen = ( props ) => {
     const mallProperty = props.navigation.state.params.property
     const dataMongo = props.navigation.state.params.dataMongo
    
+    const openMap = () => {
+    let [lat, long] = mallProperty.latlong.split(',')
+     console.log('open directions')
+     let f = Platform.select({
+          ios: () => {
+              Linking.openURL(`http://maps.apple.com/maps?daddr=-${lat},${long}}`);
+          },
+          android: () => {
+              console.log('ANDROID')
+              Linking.openURL(`http://maps.google.com/maps?daddr=-${lat},${long}`).catch(err => console.error('An error occurred', err));;
+          }
+      });
+     f()
+  }
+
   return (
     <Container>
       <ImageBackground
@@ -104,7 +119,7 @@ const SuccessReserveScreen = ( props ) => {
               }}
             >
               <Button
-                onPress={() => alert("get gmap keles")}
+                onPress={() => openMap()}
                 style={{
                   marginTop: 35,
                   marginHorizontal : 7,

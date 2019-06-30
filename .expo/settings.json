@@ -3,5 +3,9 @@
   "lanType": "ip",
   "dev": true,
   "minify": false,
+<<<<<<< HEAD
   "urlRandomness": "qi-pyi"
+=======
+  "urlRandomness": "sn-ij2"
+>>>>>>> d3a3f3cfab5113b184a90a734251924f482b36d0
 }

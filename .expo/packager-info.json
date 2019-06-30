@@ -3,7 +3,13 @@
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
+<<<<<<< HEAD
   "expoServerNgrokUrl": null,
   "packagerNgrokUrl": null,
   "ngrokPid": null
+=======
+  "expoServerNgrokUrl": "https://sn-ij2.paulinavita.client.exp.direct",
+  "packagerNgrokUrl": "https://packager.sn-ij2.paulinavita.client.exp.direct",
+  "ngrokPid": 61112
+>>>>>>> d3a3f3cfab5113b184a90a734251924f482b36d0
 }
