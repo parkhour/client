@@ -3,7 +3,8 @@ import {
   createAppContainer,
   createStackNavigator,
   createBottomTabNavigator,
-  createSwitchNavigator
+  createSwitchNavigator,
+  createMaterialTopTabNavigator
 } from "react-navigation";
 import FAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import HomeScreen from "./screens/HomeScreen";
@@ -14,7 +15,30 @@ import RegisterScreen from "./screens/RegisterScreen";
 import SuccessReserveScreen from "./screens/SuccessReserveScreen";
 import SplashScreen from "./screens/SplashScreen"
 import ConfirmOrRejectScreen from "./screens/ConfirmOrRejectScreen"
+import IntroScreenOne from "./screens/IntroScreenOne"
+import IntroScreenTwo from "./screens/IntroScreenTwo"
+import IntroScreenThree from "./screens/IntroScreenThree"
 
+const IntroScreen = createMaterialTopTabNavigator({
+  IntroScreenOne: {
+    screen: IntroScreenOne,
+    navigationOptions: {
+       tabBarVisible:false
+    },
+  },
+  IntroScreenTwo: {
+    screen: IntroScreenTwo,
+    navigationOptions: {
+       tabBarVisible:false
+    },
+  },
+  IntroScreenThree: {
+    screen: IntroScreenThree,
+    navigationOptions: {
+       tabBarVisible:false
+    }
+  }
+})
 
 const ReservationStackNavigator = createBottomTabNavigator({
   HomeScreen: {
@@ -22,7 +46,6 @@ const ReservationStackNavigator = createBottomTabNavigator({
     navigationOptions: ({ navigation }) => ({
       headerTransparent: true,
       headerLeft: null,
-
     })
   },
   ListingScreen: {
@@ -47,11 +70,14 @@ const ReservationStackNavigator = createBottomTabNavigator({
 });
 
 
+
+
+
 const AuthStack = createStackNavigator({
   LoginScreen: {
     screen: LoginScreen,
 
-    navigationOptions:{
+    navigationOptions: {
       headerTransparent: true,
       headerLeft: null,
     }
@@ -59,7 +85,7 @@ const AuthStack = createStackNavigator({
   RegisterScreen: {
     screen: RegisterScreen,
 
-    navigationOptions:{
+    navigationOptions: {
       headerTransparent: true,
       headerLeft: null,
     }
@@ -69,12 +95,14 @@ const AuthStack = createStackNavigator({
 const LoadingStack = createStackNavigator({
   SplashScreen: {
     screen: SplashScreen,
-    navigationOptions:{
+    navigationOptions: {
       headerTransparent: true,
       headerLeft: null,
     }
   }
 })
+
+
 
 
 const BottomNavigatorConfig = {
@@ -100,38 +128,38 @@ const AppNavigator = createBottomTabNavigator(
     HomeScreen: {
       screen: HomeScreen,
       navigationOptions: () => ({
-          title : "Home",
-            tabBarIcon: ({ tintColor }) => (
-              <FAwesomeIcon name="home" color={tintColor} size={25} />
-            )
-          })
+        title: "Home",
+        tabBarIcon: ({ tintColor }) => (
+          <FAwesomeIcon name="home" color={tintColor} size={25} />
+        )
+      })
     },
     ListingScreen: {
       screen: ListingScreen,
       navigationOptions: () => ({
-        title : "Home",
-          tabBarIcon: ({ tintColor }) => (
-            <FAwesomeIcon name="search" color={tintColor} size={25} />
-          )
-        })
+        title: "Home",
+        tabBarIcon: ({ tintColor }) => (
+          <FAwesomeIcon name="search" color={tintColor} size={25} />
+        )
+      })
     },
     ReservationScreen: {
       screen: ReservationScreen,
       navigationOptions: () => ({
-        title : "Res",
-          tabBarIcon: ({ tintColor }) => (
-            <FAwesomeIcon name="car" color={tintColor} size={25} />
-          )
-        })
+        title: "Res",
+        tabBarIcon: ({ tintColor }) => (
+          <FAwesomeIcon name="car" color={tintColor} size={25} />
+        )
+      })
     },
     SuccessReserveScreen: {
       screen: SuccessReserveScreen,
       navigationOptions: () => ({
-        title : "Success",
-          tabBarIcon: ({ tintColor }) => (
-            <FAwesomeIcon name="home" color={tintColor} size={25} />
-          )
-        })
+        title: "Success",
+        tabBarIcon: ({ tintColor }) => (
+          <FAwesomeIcon name="home" color={tintColor} size={25} />
+        )
+      })
     },
     ConfirmOrRejectScreen: {
       screen: ConfirmOrRejectScreen,
@@ -170,9 +198,9 @@ const AppNavigator = createBottomTabNavigator(
 
 const switchNav = createSwitchNavigator({
   authLoading: LoadingStack,
+  Intro : IntroScreen,
   App: AppNavigator,
-  Auth: AuthStack
-
+  Auth: AuthStack,
 })
 
 export default createAppContainer(switchNav);

@@ -14,10 +14,9 @@ const SplashScreen = (props) => {
 
     const cekAsyncStorage = async () => {
         const token = await AsyncStorage.getItem('token');
-        navigate(token ? 'App' : 'Auth');
+        navigate(token ? 'App' : 'Intro');
     }
-
-
+    
     useEffect(() => {
         setTimeout(() => {
             cekAsyncStorage()
@@ -54,6 +53,7 @@ const SplashScreen = (props) => {
                     bottom: 0,
                     justifyContent: 'center',
                     alignItems: 'center',
+                    
                 }
             }>
                 <Text style={{

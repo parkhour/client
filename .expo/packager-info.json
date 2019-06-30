@@ -3,13 +3,7 @@
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-<<<<<<< HEAD
   "expoServerNgrokUrl": null,
   "packagerNgrokUrl": null,
   "ngrokPid": null
-=======
-  "expoServerNgrokUrl": "https://vb-86g.anonymous.client.exp.direct",
-  "packagerNgrokUrl": "https://packager.vb-86g.anonymous.client.exp.direct",
-  "ngrokPid": 56872
->>>>>>> 180436e4eea7f524e0fdd83b0d08572eb0390e2c
 }
