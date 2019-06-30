@@ -28,7 +28,7 @@ const LoginScreen = (props) => {
       await AsyncStorage.setItem('token', value);
     } catch (error) {
       console.log(error);
-      
+  
     }
 
   }
@@ -54,7 +54,9 @@ const LoginScreen = (props) => {
 
       console.log('balikkan dari backend', data);
       
-      await setAsyncStorage(data.token)
+      await  AsyncStorage.setItem('token', data.token)
+      await  AsyncStorage.setItem('uid', data.uid)
+
       // props.loginFirebase(data.token)
       await setEmail('')
       await setPassword('')
@@ -98,14 +100,6 @@ const LoginScreen = (props) => {
     //   })
   }
 
-
-
-  const onLoginSuccess = (value) => {
-    setEmail('')
-    setPassword('')
-    setAsyncStorage(value.user.uid)
-    props.loginFirebase(value)
-  }
 
   useEffect(() => {
     loadLocalFont();
