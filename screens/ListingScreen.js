@@ -152,6 +152,10 @@ class ListingScreen extends Component {
         onCheckParkingSpace.latlong
       }&destination=-6.2697656,106.7824&key=${API_KEY}`
     );
+
+    //nge await firebase cari berapa empty spaces 
+
+    
     let duration = data.routes[0].legs[0].duration.text;
     console.log(duration);
 
