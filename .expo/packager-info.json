@@ -3,7 +3,7 @@
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "expoServerNgrokUrl": "https://sy-ndy.paulinavita.client.exp.direct",
+  "packagerNgrokUrl": "https://packager.sy-ndy.paulinavita.client.exp.direct",
+  "ngrokPid": 52764
 }

@@ -1,18 +1,13 @@
 import axios from 'axios'
 import React, { Component } from "react";
-import { Platform, Text, View, StyleSheet } from "react-native";
+import { Platform, Text, View, StyleSheet, AsyncStorage } from "react-native";
 import Constants from "expo-constants";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import { MapView } from "expo";
 import { Container } from "native-base";
-import API_KEY from '../keys.js'
+import {API_KEY} from '../keys.js'
 
-//  INI PIM BRO
-// {
-//   name : 'Hacktiv8',
-//   latlong : '-6.2697656,106.7824'
-// }
 
 export default class ReservationScreen extends Component {
   state = {

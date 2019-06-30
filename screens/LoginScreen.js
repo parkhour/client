@@ -10,6 +10,8 @@ import firebase from 'firebase'
 import { connect } from 'react-redux';
 import db from '../config'
 import { loginFirebase } from '../store/actions/authActions'
+import axios from 'axios'
+import { BASEURL } from '../keys'
 
 
 
@@ -41,16 +43,23 @@ const LoginScreen = (props) => {
   };
 
 
-  const loginFunc = (props) => {
-    console.log(email, password)
-    firebase.auth().signInWithEmailAndPassword(email, password)
-      .then(user => {
-        if (user) {
-          onLoginSuccess(user)
-          navigate('App')
-        }
+  const loginFunc =  async (props) => {
+    try {
+      console.log(email, password, 'ini datanyaaaa');
+      
+      let { data } = await axios.post(`${BASEURL}/login`, {
+        email, password
       })
-      .catch(error => {
+
+      console.log('balikkan dari backend', data);
+      
+      await setAsyncStorage(data.token)
+      // props.loginFirebase(data.token)
+      await setEmail('')
+      await setPassword('')
+      
+    } catch (error) {
+        console.log(error);
         switch (error.code) {
           case 'auth/invalid-email':
             alert('Invalid email address format.');
@@ -62,8 +71,29 @@ const LoginScreen = (props) => {
           default:
             alert('Check your internet connection');
         }
-
-      })
+        
+    }
+    // console.log(email, password)
+    // firebase.auth().signInWithEmailAndPassword(email, password)
+    //   .then(user => {
+    //     if (user) {
+    //       onLoginSuccess(user)
+    //       navigate('App')
+    //     }
+    //   })
+    //   .catch(error => {
+    // switch (error.code) {
+    //   case 'auth/invalid-email':
+    //     alert('Invalid email address format.');
+    //     break;
+    //   case 'auth/user-not-found':
+    //   case 'auth/wrong-password':
+    //     alert('Invalid email address or password');
+    //     break;
+    //   default:
+    //     alert('Check your internet connection');
+    // }
+    //   })
   }
 
 
