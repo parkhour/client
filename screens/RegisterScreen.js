@@ -55,7 +55,9 @@ const RegisterScreen = (props) => {
           email, password
         })
         console.log(data, 'balikikan dari backend');
-        // setAsyncStorage(data.token)
+        await  AsyncStorage.setItem('token', data.token)
+        await  AsyncStorage.setItem('uid', data.uid)
+  
         // props.loginFirebase(data.token)
         navigate('App')
 
