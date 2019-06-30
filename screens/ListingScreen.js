@@ -5,7 +5,8 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
-  ImageBackground
+  ImageBackground,
+  AsyncStorage
 } from "react-native";
 import * as Font from "expo-font";
 import axios from "axios";
@@ -28,8 +29,7 @@ import {
   Content
 } from "native-base";
 import { withNavigation } from "react-navigation";
-import API_KEY from "../keys.js";
-
+import {API_KEY, BASEURL} from "../keys.js";
 // import database from "../config.js";
 
 const listParkingSpace = [
@@ -93,24 +93,56 @@ class ListingScreen extends Component {
   //   }
   // }
 
+
   reserveParkSpace = async id => {
+    console.log('kesinii');
+    
+    try {
+      console.log('berhasil');
+      const token = await AsyncStorage.getItem('token')
+      console.log(token);
+      
+      let { data } = await axios({
+        method: 'POST',
+        url: `${BASEURL}/reservations`,
+        data: {
+          mallId: id,
+          parkId: 1,
+        },
+        headers: {
+          authorization: token,
+        }
+      })
+      // ).post(`${BASEURL}/reservations`,  { mallId : id, parkId : 1}, {
+      //   headers : { authorization : token }
+      // })
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
+    
+     // CREATE RESERVATION AS WAITING AND SEND THE USER ID FROM STORE
+     
+      
+     // CHANGE PARK SPACE STATUS INTO RESERVED AND SEND THE USER ID FROM STORE
+
+
     // database.ref("test").on("value", function(snapshot) {
     //   snapshot.val().parkingLot[id].forEach(async (space, idx) => {
     //     if (space.status == "empty") {
     //       // CHANGE PARK SPACE STATUS INTO RESERVED AND SEND THE USER ID FROM STORE
     //       await database
     //         .ref(`/test/parkingLot/${id}/${idx}`)
-    //         .update({ status: "reserved", uid: "DARI STORE YA" });
+    //         .update({ status: "reserved", uid: token });
 
     //       // CREATE RESERVATION AS WAITING AND SEND THE USER ID FROM STORE
     //       await database
     //         .ref(`/test/reservations/randomDULU`)
-    //         .set({ parkId: id, status: "waiting", uid: "DARI STORE YA" });
+    //         .set({ parkId: id, status: "waiting", uid: token });
 
           const { navigate } = this.props.navigation
-          console.log(this.props);
-          console.log(navigate, 'bwhhhhh');
-          await navigate ('SuccessReserveScreen', {id : id})
+          // await navigate ('SuccessReserveScreen', {id : id})
         // }
       // });
     // });

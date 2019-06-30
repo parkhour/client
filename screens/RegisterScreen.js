@@ -9,6 +9,8 @@ import firebase from 'firebase'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import db from '../config'
+import axios from 'axios'
+import { BASEURL } from '../keys'
 import { loginFirebase } from '../store/actions/authActions'
 
 
@@ -45,21 +47,54 @@ const RegisterScreen = (props) => {
 
   });
 
-  const RegisterFunc = () => {
-    console.log(passwordConfirm,'sdsdsdsd',password)
-    if(passwordConfirm===password){
-      firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then(result => {
-        if (result) {
-          onRegisterSuccess(result)
+  const RegisterFunc = async () => {
+    try {
+
+      if (passwordConfirm===password){
+        let { data } = await axios.post(`${BASEURL}/register`, {
+          email, password
+        })
+        console.log(data, 'balikikan dari backend');
+        // setAsyncStorage(data.token)
+        // props.loginFirebase(data.token)
+        navigate('App')
+
+        setEmail('')
+        setPassword('')
+        
+      } else {
+        alert("Password does not match")
+      }
+      
+    } catch (error) {
+        console.log(error);
+        switch (error.code) {
+          case 'auth/invalid-email':
+            alert('Invalid email address format.');
+            break;
+          case 'auth/user-not-found':
+          case 'auth/wrong-password':
+            alert('Invalid email address or password');
+            break;
+          default:
+            alert('Check your internet connection');
         }
-      })
-      .catch((error) => {
-        alert(error.code)
-      })
-    }else{
-      alert('password tidak sama')
+        
     }
+    // console.log(passwordConfirm,'sdsdsdsd',password)
+    // if(passwordConfirm===password){
+    //   firebase.auth().createUserWithEmailAndPassword(email, password)
+    //   .then(result => {
+    //     if (result) {
+    //       onRegisterSuccess(result)
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     alert(error.code)
+    //   })
+    // }else{
+    //   alert('password tidak sama')
+    // }
 
   }
 
