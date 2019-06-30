@@ -96,13 +96,9 @@ class ListingScreen extends Component {
 
   reserveParkSpace = async item => {
     // AsyncStorage.clear()
-    console.log('kesinii');
     
     try {
-      console.log('berhasil');
-      const token = await AsyncStorage.getItem('token')
-      console.log(token);
-      
+      const token = await AsyncStorage.getItem('token')      
       let { data } = await axios({
         method: 'POST',
         url: `${BASEURL}/reservations`,
@@ -114,10 +110,6 @@ class ListingScreen extends Component {
           authorization: token,
         }
       })
-      console.log('sbeleu data');
-      
-      console.log(data, 'dari backend set revseratio ');
-
       const { navigate } = this.props.navigation
       await navigate ('SuccessReserveScreen', {property : item, dataMongo : data})
   
