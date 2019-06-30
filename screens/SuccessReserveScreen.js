@@ -12,9 +12,13 @@ import {
   Button
 } from "native-base";
 import { withNavigation } from "react-navigation"
+import moment from 'moment'
 
 const SuccessReserveScreen = ( props ) => {
     const { navigate } = props.navigation
+    const mallProperty = props.navigation.state.params.property
+    const dataMongo = props.navigation.state.params.dataMongo
+   
   return (
     <Container>
       <ImageBackground
@@ -56,20 +60,20 @@ const SuccessReserveScreen = ( props ) => {
                       fontWeight: "bold"
                     }}
                   >
-                    Nama Tempat Parkir
+                    {mallProperty.name}
                   </Text>
                   <Left>
                     <Text style={{ ...styles.bermargin, marginTop: 7 }}>
                       <Text style={{ fontWeight: "bold" }}>Reserved At :</Text>{" "}
-                      12:00{" "}
+                      {moment(dataMongo.createdAt).format('MMMM Do YYYY, h:mm:ss a')}{" "}
                     </Text>
                     <Text style={{ ...styles.bermargin }}>
                       <Text style={{ fontWeight: "bold" }}>ETA : </Text>
-                      12 : 10
+                      {moment(dataMongo.createdAt).add(15, 'minutes').format('MMMM Do YYYY, h:mm:ss a')}
                     </Text>
                     <Text style={{ ...styles.bermargin, marginTop: 20 }}>
                       You are{" "}
-                      <Text style={{ fontWeight: "bold" }}>5 minutes</Text> to
+                      <Text style={{ fontWeight: "bold" }}>{mallProperty.duration.split(" ")[0]} minutes</Text> to
                       the the spot
                     </Text>
                     <Text style={{ ...styles.bermargin }}>

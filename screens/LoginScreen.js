@@ -27,7 +27,8 @@ const LoginScreen = (props) => {
     try {
       await AsyncStorage.setItem('token', value);
     } catch (error) {
-      // Error saving data
+      console.log(error);
+      
     }
 
   }
@@ -57,6 +58,7 @@ const LoginScreen = (props) => {
       // props.loginFirebase(data.token)
       await setEmail('')
       await setPassword('')
+      navigate('App')
       
     } catch (error) {
         console.log(error);
