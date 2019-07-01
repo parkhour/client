@@ -103,6 +103,7 @@ class ChoicesScreen extends Component {
   };
 
   async componentWillMount() {
+      console.log(this.props.navigation.navigate)
     this.index = 0;
     this.animation = new Animated.Value(0);
 
@@ -126,6 +127,8 @@ class ChoicesScreen extends Component {
 
     let location = await Location.getCurrentPositionAsync({});
     this.setState({ location }, async () => {
+        console.log(location, 'APA LOKASINYA');
+        
       await this.setState({ locationReady: true });
       this.state.markers.forEach(async space => {
         console.log(space);
@@ -135,14 +138,17 @@ class ChoicesScreen extends Component {
   };
 
   getETAAsync = async onCheckParkingSpace => {
-    console.log(onCheckParkingSpace, " YUHOEUHE");
+    let loc = await Location.getCurrentPositionAsync({});
 
+    console.log(onCheckParkingSpace, " YUHOEUHE");
+    console.log(this.state.location.coords);
+    
     let { data } = await axios.get(
-      `https://maps.googleapis.com/maps/api/directions/json?origin=${
+      `https://maps.googleapis.com/maps/api/directions/json?origin=${loc.coords.latitude},${loc.coords.longitude}&destination=${
         onCheckParkingSpace.coordinate.latitude
       },${
         onCheckParkingSpace.coordinate.longitude
-      }&destination=-6.2697656,106.7824&key=${API_KEY}`
+      }&key=${API_KEY}`
     );
 
     let duration = data.routes[0].legs[0].duration.text;
@@ -165,6 +171,8 @@ class ChoicesScreen extends Component {
     // AsyncStorage.clear()
 
     try {
+     let loc = await Location.getCurrentPositionAsync({});
+
       const token = await AsyncStorage.getItem("token");
       const uiddd = await AsyncStorage.getItem("uid");
 
@@ -183,9 +191,10 @@ class ChoicesScreen extends Component {
         }
       });
       const { navigate } = this.props.navigation;
-      await navigate("SuccessReserveScreen", {
+      await navigate("SuccessReserveScreenMap", {
         property: item,
-        dataMongo: data
+        dataMongo: data,
+        currentLoc : loc.coords
       });
     } catch (error) {
       console.log(error);
