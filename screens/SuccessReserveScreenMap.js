@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Dimensions, StyleSheet, View, Image} from "react-native";
+import { Dimensions, StyleSheet, View, Image,  Platform, Linking} from "react-native";
 import { Container, Text, Card, Content, Body, Left, Button} from "native-base";
 import MapView from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
@@ -10,8 +10,6 @@ import moment from 'moment'
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
-const LATITUDE = 37.771707;
-const LONGITUDE = -122.4053769;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const GOOGLE_MAPS_APIKEY = API_KEY;
@@ -38,16 +36,18 @@ class SuccessReserveScreenMap extends Component {
     });
   };
 
-  openMap() {
-    let [lat, long] = mallProperty.latlong.split(',')
+  openMap = () => {
+    console.log(this.props.navigation.state.params.property, 'EMANG DAPAT APA');
+    let {latitude, longitude} = this.props.navigation.state.params.property.coordinate
+    
      console.log('open directions')
      let f = Platform.select({
           ios: () => {
-              Linking.openURL(`http://maps.apple.com/maps?daddr=-${lat},${long}}`);
+              Linking.openURL(`http://maps.apple.com/maps?daddr=${latitude},${longitude}}`);
           },
           android: () => {
               console.log('ANDROID')
-              Linking.openURL(`http://maps.google.com/maps?daddr=-${lat},${long}`).catch(err => console.error('An error occurred', err));;
+              Linking.openURL(`http://maps.google.com/maps?daddr=${latitude},${longitude}`).catch(err => console.error('An error occurred', err));;
           }
       });
      f()
@@ -194,7 +194,7 @@ class SuccessReserveScreenMap extends Component {
               }}
             >
               <Button
-                onPress={() => openMap()}
+                onPress={() => this.openMap()}
                 style={{
                   marginTop: 35,
                   marginHorizontal : 7,

@@ -5,25 +5,31 @@ import {
   StyleSheet,
   AsyncStorage,
   ActivityIndicator,
-  TouchableHighlight,
-  ImageBackground,
   Dimensions
 } from "react-native";
 import { connect } from "react-redux";
-import * as Font from "expo-font";
+import { Grid, Row, Col } from "react-native-easy-grid";
 import {
+  Button,
   Container,
+  Content,
   Icon,
+  Header,
+  Item,
+  Input
 } from "native-base";
 import firebase from "firebase";
 import { Permissions, Notifications } from "expo";
+import HistoryCard from "../components/HistoryCard";
+import { BASEURL } from "../keys";
+import axios from "axios";
+import TopBar from "../components/TopBar";
 
-const HomeScreen = props => {
+const AboutScreen = props => {
   const HEIGHT = Dimensions.get("window").height / 2;
   const { navigate } = props.navigation;
   const [currentUser, setCurrentUser] = useState("");
   const [expoToken, setToken] = useState("");
-  const [fontLoad, setFontLoad] = useState(false);
   const [currentRes, setCurrentReservation] = useState({});
   const [userHistory, setUserHistory] = useState([]);
   const registerForPushNotificationsAsync = async () => {
@@ -64,15 +70,6 @@ const HomeScreen = props => {
     await setCurrentUser(orang);
     await registerForPushNotificationsAsync();
   };
-
-  const loadLocalFont = async () => {
-    await Font.loadAsync({
-      lgc_reg: require("../assets/louis_george_caf/Louis_George_Cafe.ttf"),
-      helve_reg: require("../assets/coolvetica/coolvetica_condensed_rg.ttf")
-    });
-    await setFontLoad(true);
-  };
-
 
   const sendPushNotification = async obj => {
     console.log("keinvoke");
@@ -124,47 +121,63 @@ const HomeScreen = props => {
       });
   };
 
+  const getUserHistory = async () => {
+    try {
+      let token = await AsyncStorage.getItem("token");
+      let { data } = await axios.get(`${BASEURL}/reservations`, {
+        headers: {
+          authorization: token
+        }
+      });
+      await setUserHistory(data);
+      console.log("nyape    ");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    loadLocalFont()
     getUser();
     listenReservation();
+    getUserHistory();
   }, []);
 
-  return fontLoad ? (
-    <Container style={{ backgroundColor: "rgb(255,207,0)" }}>
-      <ImageBackground
-        resizeMode="contain"
-        source={require("../assets/taxi2.gif")}
-        style={{ width: "100%", height: "100%" }}
-      >
-        <View style={{justifyContent : 'center', flex: 1,marginTop: 40, alignContent : 'center'}}>
+  return (
+    <Container>
+     <TopBar text={"Your Previous Parks"}></TopBar>
 
-        <Text style={{ ...styles.textnya }}>Hassle-free reservation</Text>
-        <Text style={{ ...styles.textnya }}>at any hour</Text>
-        <Text style={{ ...styles.textnya }}>with Parkhour</Text>
-        </View>
-
-        <View style={{justifyContent : 'center', flex : 1, marginTop : 200, flexDirection : 'row', alignContent : 'center'}}>
-          <TouchableHighlight onPress={() => props.navigation.navigate('ChoicesScreen')}>
-             <Text style={{ ...styles.textnya }}>Start Searching</Text>
-             </TouchableHighlight>
-        </View>
-      </ImageBackground>
+      <Content style={{ padding: 20 }}>
+        <Text
+          style={{
+            ...styles.grey,
+            fontSize: 19,
+            fontWeight: "bold",
+            marginBottom: 2
+          }}
+        >
+        </Text>
+        {userHistory.length ? (
+          <View>
+            {userHistory.map((hist, idx) => (
+              <HistoryCard history={hist} key={idx} />
+            ))}
+          </View>
+        ) : (
+          <View
+            style={{
+              justifyContent: "center",
+              alignContent: "center",
+              alignItems: "center",
+              marginTop: Dimensions.get("window").height / 4
+            }}
+          >
+            <ActivityIndicator size="large" color="rgb(255,207,0)" />
+          </View>
+        )}
+      </Content>
     </Container>
-  ) :  <View style={{
-    position: "absolute",
-    flex: 8,
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    opacity : 0.3,
-    justifyContent: 'center',
-    alignItems: 'center',
-  }}>
-    <ActivityIndicator size="small" color="rgb(225,207,0)" />
-  </View>
-}
+  );
+};
 
 const styles = StyleSheet.create({
   white: {
@@ -175,13 +188,6 @@ const styles = StyleSheet.create({
   },
   grey: {
     color: "rgb(32,36,60)"
-  },
-  textnya: {
-    color: "rgb(32,36,60)",
-    fontWeight: "bold",
-    fontSize: 22,
-    textAlign : 'center',
-    fontFamily : 'lgc_reg'
   }
 });
 
@@ -191,4 +197,4 @@ const mapStatetoProps = state => {
 export default connect(
   mapStatetoProps,
   null
-)(HomeScreen);
+)(AboutScreen);

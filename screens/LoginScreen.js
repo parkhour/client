@@ -21,19 +21,6 @@ const LoginScreen = (props) => {
   const [fontLoad, setFontLoad] = useState(false);
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [async, setAsync] = useState('')
-
-  const setAsyncStorage = async (value) => {
-    try {
-      await AsyncStorage.setItem('token', value);
-    } catch (error) {
-      console.log(error);
-  
-    }
-
-  }
-
-
 
   const loadLocalFont = async () => {
     await Font.loadAsync({

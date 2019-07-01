@@ -20,6 +20,7 @@ import Constants from "expo-constants";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import * as Font from "expo-font";
+import { connect } from 'react-redux'
 
 const Images = [
   {
@@ -184,7 +185,8 @@ class ChoicesScreen extends Component {
         url: `${BASEURL}/reservations`,
         data: {
           mallId: item.id,
-          parkId: 1
+          parkId: 0,
+          mallName : item.name
         },
         headers: {
           authorization: token
@@ -197,7 +199,7 @@ class ChoicesScreen extends Component {
         currentLoc : loc.coords
       });
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   };
 
@@ -397,4 +399,5 @@ const styles = StyleSheet.create({
   }
 });
 
+connect
 export default withNavigation(ChoicesScreen);
