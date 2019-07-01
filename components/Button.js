@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Text } from 'native-base';
+import { Button, Text, Dimensions } from 'native-base';
 import { StyleSheet } from 'react-native'
 import * as Font from "expo-font";
 
@@ -19,7 +19,7 @@ const ButtonGeneral = (props) => {
       }, []);
 
       return fontLoad ?  (
-        <Button onPress={()=>props.passFunction()} style={{backgroundColor: "rgb(32, 36,60)"}} rounded>
+        <Button onPress={()=>props.passFunction()} style={{width : Dimensions.get('width')/3, backgroundColor: "rgb(32, 36,60)"}} rounded>
             <Text style={{...styles.generalText}}>{props.text}</Text>
           </Button>
     ) : null

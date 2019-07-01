@@ -3,13 +3,11 @@ import { StyleSheet, Image, Dimensions } from "react-native";
 import { View, Text, Container, Card, Content, Body, Left, Button} from "native-base";
 import { Col, Grid, Row } from "react-native-easy-grid";
 import database from '../config'
+import { Header } from "react-navigation";
 
 const ConfirmOrRejectScreen = (props) => {
   const data = props.navigation.state.params.reservation.data
   const idnya = props.navigation.state.params.reservation.id
-  console.log(props.navigation.state.params.reservation.data);
-  console.log(props.navigation.state.params.reservation.id);
-
 
   const confirmReservation = async () => {
     let result = await database.ref(`/test/reservations/${idnya}`).update({status : "confirmed"})
@@ -23,6 +21,7 @@ const ConfirmOrRejectScreen = (props) => {
 
   return (
     <Container style={{ padding: 20 }}>
+      <Header></Header>
       <Content>
         <Card
           style={{
@@ -35,7 +34,7 @@ const ConfirmOrRejectScreen = (props) => {
           <Text
             style={{ ...styles.textForDark, fontWeight: "bold", fontSize: 23 }}
           >
-            Nama Parkir
+           {data.mallId}
           </Text>
           <Text style={{ ...styles.textForDark }}>Jakarta, Indonesia</Text>
           <Text style={{ ...styles.textForDark }}>.top</Text>
@@ -50,7 +49,7 @@ const ConfirmOrRejectScreen = (props) => {
           }}
         >
           <Text style={{ ...styles.textForLight, marginBottom: 4 }}>
-            <Text style={{ fontWeight: "bold" }}>Started at : </Text> 15:15
+            <Text style={{ fontWeight: "bold" }}>Started at : </Text> {data.createdAt}
           </Text>
           <Text style={{ ...styles.textForLight, marginVertical: 4 }}>
             <Text style={{ fontWeight: "bold" }}>End at : </Text> 20:15

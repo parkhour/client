@@ -14,7 +14,7 @@ import RegisterScreen from "./screens/RegisterScreen";
 import SuccessReserveScreen from "./screens/SuccessReserveScreen";
 import SplashScreen from "./screens/SplashScreen"
 import ConfirmOrRejectScreen from "./screens/ConfirmOrRejectScreen"
-
+import ChoicesScreen from "./screens/ChoicesScreen"
 
 const ReservationStackNavigator = createBottomTabNavigator({
   HomeScreen: {
@@ -79,10 +79,10 @@ const LoadingStack = createStackNavigator({
 
 const BottomNavigatorConfig = {
   tabBarOptions: {
-    activeTintColor: "#E01C3F", //color when tab is active
+    activeTintColor: "rgb(255,207,0)", //color when tab is active,
     inactiveTintColor: "#ffffff",
     style: {
-      backgroundColor: "rgb(20,29,86)"
+      backgroundColor: "rgb(32,36,60)"
     },
     showLabel: false // turn off tab labels
   }
@@ -124,23 +124,33 @@ const AppNavigator = createBottomTabNavigator(
           )
         })
     },
-    SuccessReserveScreen: {
-      screen: SuccessReserveScreen,
+    ChoicesScreen : {
+      screen: ChoicesScreen,
       navigationOptions: () => ({
-        title : "Success",
+        title : "Res",
           tabBarIcon: ({ tintColor }) => (
-            <FAwesomeIcon name="home" color={tintColor} size={25} />
+            <FAwesomeIcon name="eye" color={tintColor} size={25} />
           )
         })
-    },
-    ConfirmOrRejectScreen: {
-      screen: ConfirmOrRejectScreen,
-      navigationOptions: () => ({
-        tabBarIcon: ({ tintColor }) => (
-          <FAwesomeIcon name="eye" color={tintColor} size={25} />
-        )
-      })
-    },
+
+    }
+    // SuccessReserveScreen: {
+    //   screen: SuccessReserveScreen,
+    //   navigationOptions: () => ({
+    //     title : "Success",
+    //       tabBarIcon: ({ tintColor }) => (
+    //         <FAwesomeIcon name="home" color={tintColor} size={25} />
+    //       )
+    //     })
+    // },
+    // ConfirmOrRejectScreen: {
+    //   screen: ConfirmOrRejectScreen,
+    //   navigationOptions: () => ({
+    //     tabBarIcon: ({ tintColor }) => (
+    //       <FAwesomeIcon name="eye" color={tintColor} size={25} />
+    //     )
+    //   })
+    // },
     // ListingScreen: {
     //   screen: ListingScreen,
     //   navigationOptions: () => ({
