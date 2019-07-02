@@ -3,21 +3,45 @@ import {
   createAppContainer,
   createStackNavigator,
   createBottomTabNavigator,
-  createSwitchNavigator
+  createSwitchNavigator,
+  createMaterialTopTabNavigator
 } from "react-navigation";
 import FAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import HomeScreen from "./screens/HomeScreen";
-import ReservationScreen from "./screens/ReservationScreen";
-import ListingScreen from "./screens/ListingScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
-import SuccessReserveScreen from "./screens/SuccessReserveScreen";
 import SplashScreen from "./screens/SplashScreen";
 import ConfirmOrRejectScreen from "./screens/ConfirmOrRejectScreen";
 import ChoicesScreen from "./screens/ChoicesScreen";
 import SuccessReserveScreenMap from "./screens/SuccessReserveScreenMap";
 import AboutScreen from "./screens/AboutScreen"
 import LicensePlateScreen from "./screens/LicensePlateScreen"
+import CompletedReservationScreen from "./screens/CompletedReservationScreen"
+import IntroScreenOne from "./screens/IntroScreenOne"
+import IntroScreenTwo from "./screens/IntroScreenTwo"
+import IntroScreenThree from "./screens/IntroScreenThree"
+
+
+const IntroScreen = createMaterialTopTabNavigator({
+  IntroScreenOne: {
+    screen: IntroScreenOne,
+    navigationOptions: {
+       tabBarVisible:false
+    },
+  },
+  IntroScreenTwo: {
+    screen: IntroScreenTwo,
+    navigationOptions: {
+       tabBarVisible:false
+    },
+  },
+  IntroScreenThree: {
+    screen: IntroScreenThree,
+    navigationOptions: {
+       tabBarVisible:false
+    }
+  }
+})
 
 const ReservationStackNavigator = createStackNavigator({
   HomeScreen: {
@@ -49,6 +73,14 @@ const ReservationStackNavigator = createStackNavigator({
   },
   ConfirmOrRejectScreen: {
     screen: ConfirmOrRejectScreen,
+    navigationOptions: ({ navigation }) => ({
+      headerLeft: null,
+      headerTransparent: true,
+
+    })
+  },
+  CompletedReservationScreen : {
+    screen: CompletedReservationScreen,
     navigationOptions: ({ navigation }) => ({
       headerLeft: null,
       headerTransparent: true,
@@ -122,6 +154,14 @@ const AppNavigator = createBottomTabNavigator(
         )
       })
     },
+    CompletedReservationScreen: {
+      screen: CompletedReservationScreen,
+      navigationOptions: () => ({
+        tabBarIcon: ({ tintColor }) => (
+          <FAwesomeIcon name="music" color={tintColor} size={25} />
+        )
+      })
+    }
   },
   BottomNavigatorConfig,
   {
@@ -131,6 +171,7 @@ const AppNavigator = createBottomTabNavigator(
 
 const switchNav = createSwitchNavigator({
   authLoading: LoadingStack,
+  Intro : IntroScreen,
   App: AppNavigator,
   Auth: AuthStack
 });

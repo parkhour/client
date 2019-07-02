@@ -9,18 +9,16 @@ import {
   ImageBackground,
   Dimensions
 } from "react-native";
-
-import axios from "axios";
 import { saveReservation } from '../store/actions/dataActions';
 import { connect } from "react-redux";
 import * as Font from "expo-font";
 import {
   Container,
   Icon,
+  Button
 } from "native-base";
 import firebase from "firebase";
 import { Permissions, Notifications } from "expo";
-import { BASEURL } from "../keys"
 
 const HomeScreen = props => {
   const HEIGHT = Dimensions.get("window").height / 2;
@@ -64,14 +62,9 @@ const HomeScreen = props => {
   };
 
   const getUser = async () => {
-    let orang = await AsyncStorage.getItem("token");
+    let orang = await AsyncStorage.getItem("uid");
     await setCurrentUser(orang);
     await registerForPushNotificationsAsync();
-    console.log(orang, '////');
-    axios.post(`${BASEURL}/testing`, { hello : orang})
-      .then(({data}) => {
-        console.log(data)
-      })
   };
 
   const loadLocalFont = async () => {
@@ -137,8 +130,7 @@ const HomeScreen = props => {
       });
   };
 
-  useEffect( () => {
-    console.log('halooh');
+  useEffect(() => {
     loadLocalFont()
     getUser();
     listenReservation();
@@ -160,9 +152,9 @@ const HomeScreen = props => {
         </View>
 
         <View style={{justifyContent : 'center', flex : 1, marginTop : 200, flexDirection : 'row', alignContent : 'center'}}>
-          <TouchableOpacity onPress={() => props.navigation.navigate('LicensePlateScreen')}>
-             <Text style={{ ...styles.textnya }}>Start Searching</Text>
-             </TouchableOpacity>
+          <Button outline style={{backgroundColor: 'rgb(255,207,0)'}} onPress={() => props.navigation.navigate('LicensePlateScreen')}>
+             <Text style={{ ...styles.textnya, ...styles.grey }}>Start Searching</Text>
+             </Button>
         </View>
       </ImageBackground>
     </Container>

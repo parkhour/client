@@ -14,7 +14,7 @@ const SplashScreen = (props) => {
 
     const cekAsyncStorage = async () => {
         const token = await AsyncStorage.getItem('token');
-        navigate(token ? 'App' : 'Auth');
+        navigate(token ? 'App' : 'Intro');
     }
 
 

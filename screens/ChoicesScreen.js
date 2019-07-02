@@ -183,7 +183,7 @@ class ChoicesScreen extends Component {
         method: "POST",
         url: `${BASEURL}/reservations`,
         data: {
-          mallId: 01,
+          mallId: '01',
           parkId: 0,
           mallName : item.name,
           licensePlate

@@ -15,6 +15,8 @@ const ConfirmOrRejectScreen = (props) => {
 
   const confirmReservation = async () => {
     let result = await database.ref(`/test/reservations/${idnya}`).update({status : "confirmed"})
+    let result2 = await database.ref(`/test/parkingLot/${data.mallId}/${data.parkId}`).update({confirmed : true})
+
     alert('Reservation confirmed')
     props.navigation.navigate('AboutScreen')
   }
