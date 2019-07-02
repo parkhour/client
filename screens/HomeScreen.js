@@ -5,10 +5,13 @@ import {
   StyleSheet,
   AsyncStorage,
   ActivityIndicator,
-  TouchableHighlight,
+  TouchableOpacity,
   ImageBackground,
   Dimensions
 } from "react-native";
+
+import axios from "axios";
+import { saveReservation } from '../store/actions/dataActions';
 import { connect } from "react-redux";
 import * as Font from "expo-font";
 import {
@@ -17,6 +20,7 @@ import {
 } from "native-base";
 import firebase from "firebase";
 import { Permissions, Notifications } from "expo";
+import { BASEURL } from "../keys"
 
 const HomeScreen = props => {
   const HEIGHT = Dimensions.get("window").height / 2;
@@ -60,9 +64,14 @@ const HomeScreen = props => {
   };
 
   const getUser = async () => {
-    let orang = await AsyncStorage.getItem("uid");
+    let orang = await AsyncStorage.getItem("token");
     await setCurrentUser(orang);
     await registerForPushNotificationsAsync();
+    console.log(orang, '////');
+    axios.post(`${BASEURL}/testing`, { hello : orang})
+      .then(({data}) => {
+        console.log(data)
+      })
   };
 
   const loadLocalFont = async () => {
@@ -75,21 +84,20 @@ const HomeScreen = props => {
 
 
   const sendPushNotification = async obj => {
-    console.log("keinvoke");
 
-    // let response = fetch("https://exp.host/--/api/v2/push/send", {
-    //   method: "POST",
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json"
-    //   },
-    //   body: JSON.stringify({
-    //     to: expoToken,
-    //     sound: "default",
-    //     title: "Parking Confirmation",
-    //     body: "Your parking lot status has changed"
-    //   })
-    // });
+    let response = fetch("https://exp.host/--/api/v2/push/send", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        to: expoToken,
+        sound: "default",
+        title: "Parking Confirmation",
+        body: "Your parking lot status has changed"
+      })
+    });
 
     navigate("ConfirmOrRejectScreen", {
       reservation: { ...obj }
@@ -110,7 +118,12 @@ const HomeScreen = props => {
             snapshot.val().reservations[key]["status"] == "confirmation"
           ) {
             console.log("changed detected");
-
+            saveReservation(
+              {
+                data: snapshot.val().reservations[key],
+                id: key
+              }
+            )
             await setCurrentReservation({
               data: snapshot.val().reservations[key],
               id: key
@@ -124,7 +137,8 @@ const HomeScreen = props => {
       });
   };
 
-  useEffect(() => {
+  useEffect( () => {
+    console.log('halooh');
     loadLocalFont()
     getUser();
     listenReservation();
@@ -132,6 +146,7 @@ const HomeScreen = props => {
 
   return fontLoad ? (
     <Container style={{ backgroundColor: "rgb(255,207,0)" }}>
+            
       <ImageBackground
         resizeMode="contain"
         source={require("../assets/taxi2.gif")}
@@ -145,9 +160,9 @@ const HomeScreen = props => {
         </View>
 
         <View style={{justifyContent : 'center', flex : 1, marginTop : 200, flexDirection : 'row', alignContent : 'center'}}>
-          <TouchableHighlight onPress={() => props.navigation.navigate('ChoicesScreen')}>
+          <TouchableOpacity onPress={() => props.navigation.navigate('LicensePlateScreen')}>
              <Text style={{ ...styles.textnya }}>Start Searching</Text>
-             </TouchableHighlight>
+             </TouchableOpacity>
         </View>
       </ImageBackground>
     </Container>
@@ -186,9 +201,18 @@ const styles = StyleSheet.create({
 });
 
 const mapStatetoProps = state => {
-  return { isLogin: state.auth.isLogin };
+  return { 
+    isLogin: state.auth.isLogin,
+    currentReservation : state.data.currentReservation
+  };
 };
+
+const mapDispatchToProps = () => {
+  return {
+    saveReservation
+  }
+}
 export default connect(
   mapStatetoProps,
-  null
+  mapDispatchToProps
 )(HomeScreen);

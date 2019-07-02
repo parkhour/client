@@ -4,22 +4,31 @@ import { View, Text, Container, Card, Content, Body, Left, Button, Header} from 
 import { Col, Grid, Row } from "react-native-easy-grid";
 import database from '../config'
 import TopBar from "../components/TopBar";
+import moment from 'moment'
+import { connect } from 'react-redux'
 
 const ConfirmOrRejectScreen = (props) => {
-  // console.log(props.navigation.state.params);
-  
-  // const data = props.navigation.state.params.reservation.data
-  // const idnya = props.navigation.state.params.reservation.id
+  console.log(props.navigation.state.params);
+  const { navigate } = props.navigation
+  const data = props.navigation.state.params.reservation.data
+  const idnya = props.navigation.state.params.reservation.id
 
-  // const confirmReservation = async () => {
-  //   let result = await database.ref(`/test/reservations/${idnya}`).update({status : "confirmed"})
-  //   let result2 = await database.ref(`/test/parkingLot/${data.mallId}/${data.parkId}`).update({reserved : false, reservationId : ''})
-  // }
+  const confirmReservation = async () => {
+    let result = await database.ref(`/test/reservations/${idnya}`).update({status : "confirmed"})
+    alert('Reservation confirmed')
+    props.navigation.navigate('AboutScreen')
+  }
 
-  // const rejectReservation = async () => {
-  //   let result = await database.ref(`/test/reservations/${idnya}`).update({status : "waiting"})
-  //   let result2 = await database.ref(`/test/parkingLot/${data.mallId}/${data.parkId}`).update({rejected : true})
-  // }
+  const rejectReservation = async () => {
+    let result = await database.ref(`/test/reservations/${idnya}`).update({status : "waiting"})
+    let result2 = await database.ref(`/test/parkingLot/${data.mallId}/${data.parkId}`).update({rejected : true})
+   
+   
+    alert('Reservation has been rejected')
+    navigate('SuccessReserveScreenMap', 
+      {...props.dataOnReject})
+    // props.navigation.navigate('HomeScreen')
+  }
 
   return (
     <Container style={{justifyContent: 'space-between'}} >
@@ -37,10 +46,9 @@ const ConfirmOrRejectScreen = (props) => {
           <Text
             style={{ ...styles.textForDark, fontWeight: "bold", fontSize: 23 }}
           >
-           data.mallId
+           {data.mallName}
           </Text>
           <Text style={{ ...styles.textForDark }}>Jakarta, Indonesia</Text>
-          <Text style={{ ...styles.textForDark }}>.top</Text>
         </Card>
 
         <Card
@@ -52,7 +60,7 @@ const ConfirmOrRejectScreen = (props) => {
           }}
         >
           <Text style={{ ...styles.textForLight, marginBottom: 4 }}>
-            <Text style={{ fontWeight: "bold" }}>Started at : </Text> data.createdAt
+            <Text style={{ fontWeight: "bold" }}>Started at : </Text> {moment(data.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
           </Text>
           <Text style={{ ...styles.textForLight, marginVertical: 4 }}>
             <Text style={{ fontWeight: "bold" }}>End at : </Text> 20:15
@@ -110,7 +118,7 @@ const ConfirmOrRejectScreen = (props) => {
           </Button>
         </View>
         <View style={{ flex : 4, marginTop: 80, justifyContent:'flex-end'}}>
-          <Text style={{textAlign: "center", fontWeight : "bold", fontSize : 17, color :'grey'}}>Pay when you're back</Text>
+          <Text style={{textAlign: "center", fontWeight : "bold", fontSize : 17, color :'grey'}}>You may pay later in our payment spot</Text>
         </View>
       </Content>
     </Container>
@@ -125,4 +133,8 @@ const styles = StyleSheet.create({
     color: "rgb(32,36,60)"
   }
 });
-export default ConfirmOrRejectScreen;
+
+const mapStateToProps = (state) => {
+  return { dataOnReject: state.data.dataOnReject }
+}
+export default connect(mapStateToProps, null)(ConfirmOrRejectScreen)

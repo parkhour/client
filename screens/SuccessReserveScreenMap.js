@@ -6,7 +6,8 @@ import MapViewDirections from "react-native-maps-directions";
 import { API_KEY } from "../keys";
 import { withNavigation } from "react-navigation"
 import moment from 'moment'
-
+import database from '../config'
+import Countdown from '../components/Countdown'
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -28,6 +29,7 @@ class SuccessReserveScreenMap extends Component {
     ]
   };
 
+  
   mapView = null;
 
   onMapPress = e => {
@@ -53,6 +55,14 @@ class SuccessReserveScreenMap extends Component {
      f()
   }
 
+  cancelReservation =  async (data) => {
+    console.log(data, 'APA YAH');
+    let result = await database.ref(`/test/reservations/${data._id}`).update({status : "cancelled"})
+    let result2 = await database.ref(`/test/parkingLot/${data.mallId}/${data.parkId}`).update({reserved : false, reservedId : ""})
+
+    alert('Your reservation has been cancelled succesfully. You will be redirected to Home')
+    await this.props.navigation.navigate('HomeScreen')
+  }
 
   render() {
     const { navigate } = this.props.navigation
@@ -168,7 +178,7 @@ class SuccessReserveScreenMap extends Component {
                     </Text>
                     <Text style={{ ...styles.bermargin, ...styles.smallerfont }}>
                       Your booking will end in{" "}
-                      <Text style={{ fontWeight: "bold", ...styles.smallerfont }}>15 minutes</Text>, don't be late
+                      <Text style={{ fontWeight: "bold", ...styles.smallerfont }}><Countdown createdAt={moment(dataMongo.createdAt).valueOf()}></Countdown> minutes</Text>, don't be late
                     </Text>
                   </Left>
                 </Body>
@@ -205,7 +215,7 @@ class SuccessReserveScreenMap extends Component {
                 <Text style={{ fontWeight: "bold" }}>See Directions</Text>
               </Button>
               <Button
-                onPress={() => navigate('HomeScreen')}
+                onPress={() => this.cancelReservation(dataMongo)}
                 style={{
                   marginTop: 35,
                   marginRight : 7,
@@ -213,7 +223,7 @@ class SuccessReserveScreenMap extends Component {
                   backgroundColor: "rgb(0,0,0)"
                 }}
               >
-                <Text style={{textAlign :'center', fontWeight: "bold" }}>Done</Text>
+                <Text style={{textAlign :'center', fontWeight: "bold" }}>Cancel</Text>
               </Button>
             </View>
         </View> 

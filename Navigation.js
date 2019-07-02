@@ -17,6 +17,7 @@ import ConfirmOrRejectScreen from "./screens/ConfirmOrRejectScreen";
 import ChoicesScreen from "./screens/ChoicesScreen";
 import SuccessReserveScreenMap from "./screens/SuccessReserveScreenMap";
 import AboutScreen from "./screens/AboutScreen"
+import LicensePlateScreen from "./screens/LicensePlateScreen"
 
 const ReservationStackNavigator = createStackNavigator({
   HomeScreen: {
@@ -25,7 +26,12 @@ const ReservationStackNavigator = createStackNavigator({
       headerTransparent: false,
       headerLeft: null,
       headerTransparent: true,
-
+    })
+  },
+  LicensePlateScreen : {
+    screen: LicensePlateScreen,
+    navigationOptions: ({ navigation }) => ({
+      headerTransparent: true
     })
   },
   ChoicesScreen: {
@@ -100,8 +106,8 @@ const AppNavigator = createBottomTabNavigator(
         )
       })
     },
-    ChoicesScreen: {
-      screen: ChoicesScreen,
+    LicensePlateScreen: {
+      screen: LicensePlateScreen,
       navigationOptions: () => ({
         tabBarIcon: ({ tintColor }) => (
           <FAwesomeIcon name="search" color={tintColor} size={25} />
@@ -116,30 +122,6 @@ const AppNavigator = createBottomTabNavigator(
         )
       })
     },
-    ConfirmOrRejectScreen: {
-      screen: ConfirmOrRejectScreen,
-      navigationOptions: () => ({
-        tabBarIcon: ({ tintColor }) => (
-          <FAwesomeIcon name="car" color={tintColor} size={25} />
-        )
-      })
-    }
-    // ListingScreen: {
-    //   screen: ListingScreen,
-    //   navigationOptions: () => ({
-    //     tabBarIcon: ({ tintColor }) => (
-    //       <FAwesomeIcon name="search" color={tintColor} size={25} />
-    //     )
-    //   })
-    // },
-    // ReservationScreen: {
-    //   screen: ReservationScreen,
-    //   navigationOptions: () => ({
-    //     tabBarIcon: ({ tintColor }) => (
-    //       <FAwesomeIcon name="car" color={tintColor} size={25} />
-    //     )
-    //   })
-    // }
   },
   BottomNavigatorConfig,
   {

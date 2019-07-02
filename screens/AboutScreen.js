@@ -9,89 +9,18 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { Grid, Row, Col } from "react-native-easy-grid";
-import {
-  Button,
-  Container,
-  Content,
-  Icon,
-  Header,
-  Item,
-  Input
-} from "native-base";
+import { Container, Content } from "native-base";
 import firebase from "firebase";
 import { Permissions, Notifications } from "expo";
 import HistoryCard from "../components/HistoryCard";
-import { BASEURL } from "../keys";
-import axios from "axios";
 import TopBar from "../components/TopBar";
+import Axios from "axios";
+import { BASEURL } from "../keys";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const AboutScreen = props => {
-  const HEIGHT = Dimensions.get("window").height / 2;
   const { navigate } = props.navigation;
-  const [currentUser, setCurrentUser] = useState("");
-  const [expoToken, setToken] = useState("");
-  const [currentRes, setCurrentReservation] = useState({});
   const [userHistory, setUserHistory] = useState([]);
-  const registerForPushNotificationsAsync = async () => {
-    const { status: existingStatus } = await Permissions.getAsync(
-      Permissions.NOTIFICATIONS
-    );
-    let finalStatus = existingStatus;
-
-    if (existingStatus !== "granted") {
-      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-      finalStatus = status;
-    }
-
-    if (finalStatus !== "granted") {
-      return;
-    }
-
-    try {
-      let token = await Notifications.getExpoPushTokenAsync();
-      let orang = await AsyncStorage.getItem("uid");
-
-      console.log(currentUser, "ada ga");
-
-      setToken(token);
-      firebase
-        .database()
-        .ref(`/test/user/${orang}`)
-        .update({ push_token: token });
-
-      console.log(token, "TOKEN PUSH");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getUser = async () => {
-    let orang = await AsyncStorage.getItem("uid");
-    await setCurrentUser(orang);
-    await registerForPushNotificationsAsync();
-  };
-
-  const sendPushNotification = async obj => {
-    console.log("keinvoke");
-
-    // let response = fetch("https://exp.host/--/api/v2/push/send", {
-    //   method: "POST",
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json"
-    //   },
-    //   body: JSON.stringify({
-    //     to: expoToken,
-    //     sound: "default",
-    //     title: "Parking Confirmation",
-    //     body: "Your parking lot status has changed"
-    //   })
-    // });
-
-    navigate("ConfirmOrRejectScreen", {
-      reservation: { ...obj }
-    });
-  };
 
   const listenReservation = async () => {
     let orang = await AsyncStorage.getItem("uid");
@@ -123,30 +52,40 @@ const AboutScreen = props => {
 
   const getUserHistory = async () => {
     try {
-      let token = await AsyncStorage.getItem("token");
-      let { data } = await axios.get(`${BASEURL}/reservations`, {
-        headers: {
-          authorization: token
-        }
-      });
-      await setUserHistory(data);
-      console.log("nyape    ");
+      let orang = await AsyncStorage.getItem("uid");
+      let arrHistory = [];
+      let lists = await firebase
+        .database()
+        .ref("/test/reservations")
+        .once("value", async function(snapshot) {
+          for (let key in snapshot.val()) {
+            if (snapshot.val()[key]["uid"] == orang) {
+              arrHistory.push({ data: snapshot.val()[key], id: key });
+            }
+          }
+        });
+      await setUserHistory(arrHistory);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const getCurentResFromDb = async () => {
+    try {
+      let { data } = await Axios.get(`${BASEURL}/reservations/`);
+    } catch (error) {}
+  };
+
   useEffect(() => {
-    getUser();
     listenReservation();
     getUserHistory();
   }, []);
 
   return (
     <Container>
-     <TopBar text={"Your Previous Parks"}></TopBar>
+      <TopBar text={"Your Previous Parks"} />
 
-      <Content style={{ padding: 20 }}>
+      <Content style={{ padding: 12 }}>
         <Text
           style={{
             ...styles.grey,
@@ -154,14 +93,47 @@ const AboutScreen = props => {
             fontWeight: "bold",
             marginBottom: 2
           }}
-        >
-        </Text>
+        />
         {userHistory.length ? (
-          <View>
-            {userHistory.map((hist, idx) => (
-              <HistoryCard history={hist} key={idx} />
-            ))}
-          </View>
+          <Grid>
+            <Col>
+              {userHistory.map((hist, idx) => {
+                console.log(hist);
+                if (hist.data.status == "waiting") {
+                  return (
+                    <TouchableOpacity
+                      key={idx}
+                      onPress={() =>
+                        navigate("SuccessReserveScreenMap", {
+                          property: hist,
+                          dataMongo: getCurentResFromDb(hist.data.id),
+                          licensePlate: hist.data.licensePlate,
+                          currentLoc: props.loc.coords
+                        })
+                      }
+                    >
+                      <HistoryCard style={{ flex: 1 }} history={hist} />
+                    </TouchableOpacity>
+                  );
+                } else if (hist.data.status == "confirmation") {
+                  return (
+                    <TouchableOpacity
+                      key={idx}
+                      onPress={() =>
+                        navigate("ConfirmOrRejectScreen", { ...hist })
+                      }
+                    >
+                      <HistoryCard style={{ flex: 1 }} history={hist.data} />
+                    </TouchableOpacity>
+                  );
+                } else {
+                  return (
+                    <HistoryCard key={idx} style={{ flex: 1 }} history={hist.data} />
+                  );
+                }
+              })}
+            </Col>
+          </Grid>
         ) : (
           <View
             style={{
@@ -192,7 +164,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStatetoProps = state => {
-  return { isLogin: state.auth.isLogin };
+  return {
+    currentReservation: state.data.currentReservation,
+    loc: state.data.loc
+  };
 };
 export default connect(
   mapStatetoProps,
