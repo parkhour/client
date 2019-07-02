@@ -21,19 +21,6 @@ const LoginScreen = (props) => {
   const [fontLoad, setFontLoad] = useState(false);
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [async, setAsync] = useState('')
-
-  const setAsyncStorage = async (value) => {
-    try {
-      await AsyncStorage.setItem('token', value);
-    } catch (error) {
-      console.log(error);
-  
-    }
-
-  }
-
-
 
   const loadLocalFont = async () => {
     await Font.loadAsync({
@@ -47,21 +34,20 @@ const LoginScreen = (props) => {
   const loginFunc =  async (props) => {
     try {
       console.log(email, password, 'ini datanyaaaa');
-      
-      let { data } = await axios.post(`${BASEURL}/login`, {
-        email, password
-      })
-
-      console.log('balikkan dari backend', data);
-      
-      await  AsyncStorage.setItem('token', data.token)
-      await  AsyncStorage.setItem('uid', data.uid)
-
-      // props.loginFirebase(data.token)
-      await setEmail('')
-      await setPassword('')
-      navigate('App')
-      
+      if (email == "" || password == "") {
+        alert ('Fill in all field to proceed!')
+      } else {
+        let { data } = await axios.post(`${BASEURL}/login`, {
+          email, password
+        })
+        
+        await  AsyncStorage.setItem('token', data.token)
+        await  AsyncStorage.setItem('uid', data.uid)
+  
+        await setEmail('')
+        await setPassword('')
+        navigate('App')
+      }
     } catch (error) {
         console.log(error);
         switch (error.code) {

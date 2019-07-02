@@ -155,7 +155,7 @@ class ListingScreen extends Component {
 
     //nge await firebase cari berapa empty spaces 
 
-    
+
     let duration = data.routes[0].legs[0].duration.text;
     console.log(duration);
 
@@ -204,11 +204,6 @@ class ListingScreen extends Component {
                   <DeckSwiper
                     ref={c => (this._deckSwiper = c)}
                     dataSource={this.state.possibleParkingLocations}
-                    renderEmpty={() => (
-                      <View style={{ alignSelf: "center" }}>
-                        <Text>Over</Text>
-                      </View>
-                    )}
                     renderItem={item => (
                       <>
                         <View style={{ ...styles.center }}>

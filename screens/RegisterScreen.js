@@ -49,23 +49,26 @@ const RegisterScreen = (props) => {
 
   const RegisterFunc = async () => {
     try {
-
-      if (passwordConfirm===password){
-        let { data } = await axios.post(`${BASEURL}/register`, {
-          email, password
-        })
-        console.log(data, 'balikikan dari backend');
-        await  AsyncStorage.setItem('token', data.token)
-        await  AsyncStorage.setItem('uid', data.uid)
-  
-        // props.loginFirebase(data.token)
-        navigate('App')
-
-        setEmail('')
-        setPassword('')
-        
+      if (email == "" || password == "") {
+        alert ('Fill in all field to proceed!')
       } else {
-        alert("Password does not match")
+        if (passwordConfirm===password){
+          let { data } = await axios.post(`${BASEURL}/register`, {
+            email, password
+          })
+          console.log(data, 'balikikan dari backend');
+          await  AsyncStorage.setItem('token', data.token)
+          await  AsyncStorage.setItem('uid', data.uid)
+    
+          // props.loginFirebase(data.token)
+          navigate('App')
+  
+          setEmail('')
+          setPassword('')
+          
+        } else {
+          alert("Password does not match")
+        }
       }
       
     } catch (error) {

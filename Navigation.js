@@ -3,160 +3,165 @@ import {
   createAppContainer,
   createStackNavigator,
   createBottomTabNavigator,
-  createSwitchNavigator
+  createSwitchNavigator,
+  createMaterialTopTabNavigator
 } from "react-navigation";
 import FAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import HomeScreen from "./screens/HomeScreen";
-import ReservationScreen from "./screens/ReservationScreen";
-import ListingScreen from "./screens/ListingScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
-import SuccessReserveScreen from "./screens/SuccessReserveScreen";
-import SplashScreen from "./screens/SplashScreen"
-import ConfirmOrRejectScreen from "./screens/ConfirmOrRejectScreen"
+import SplashScreen from "./screens/SplashScreen";
+import ConfirmOrRejectScreen from "./screens/ConfirmOrRejectScreen";
+import ChoicesScreen from "./screens/ChoicesScreen";
+import SuccessReserveScreenMap from "./screens/SuccessReserveScreenMap";
+import AboutScreen from "./screens/AboutScreen"
+import LicensePlateScreen from "./screens/LicensePlateScreen"
+import CompletedReservationScreen from "./screens/CompletedReservationScreen"
+import IntroScreenOne from "./screens/IntroScreenOne"
+import IntroScreenTwo from "./screens/IntroScreenTwo"
+import IntroScreenThree from "./screens/IntroScreenThree"
 
 
-const ReservationStackNavigator = createBottomTabNavigator({
+const IntroScreen = createMaterialTopTabNavigator({
+  IntroScreenOne: {
+    screen: IntroScreenOne,
+    navigationOptions: {
+       tabBarVisible:false
+    },
+  },
+  IntroScreenTwo: {
+    screen: IntroScreenTwo,
+    navigationOptions: {
+       tabBarVisible:false
+    },
+  },
+  IntroScreenThree: {
+    screen: IntroScreenThree,
+    navigationOptions: {
+       tabBarVisible:false
+    }
+  }
+})
+
+const ReservationStackNavigator = createStackNavigator({
   HomeScreen: {
     screen: HomeScreen,
     navigationOptions: ({ navigation }) => ({
-      headerTransparent: true,
+      headerTransparent: false,
       headerLeft: null,
-
+      headerTransparent: true,
     })
   },
-  ListingScreen: {
-    screen: ListingScreen,
+  LicensePlateScreen : {
+    screen: LicensePlateScreen,
     navigationOptions: ({ navigation }) => ({
       headerTransparent: true
     })
   },
-  ReservationScreen: {
-    screen: ReservationScreen,
+  ChoicesScreen: {
+    screen: ChoicesScreen,
     navigationOptions: ({ navigation }) => ({
-      headerTransparent: false
+      headerTransparent: true
     })
   },
-  SuccessReserveScreen: {
-    screen: SuccessReserveScreen,
+  SuccessReserveScreenMap: {
+    screen: SuccessReserveScreenMap,
+    navigationOptions: ({ navigation }) => ({
+      headerTransparent: true,
+      headerLeft: null
+    })
+  },
+  ConfirmOrRejectScreen: {
+    screen: ConfirmOrRejectScreen,
     navigationOptions: ({ navigation }) => ({
       headerLeft: null,
-      tabBarVisible: true
+      headerTransparent: true,
+
     })
   },
-});
+  CompletedReservationScreen : {
+    screen: CompletedReservationScreen,
+    navigationOptions: ({ navigation }) => ({
+      headerLeft: null,
+      headerTransparent: true,
 
+    })
+  }
+});
 
 const AuthStack = createStackNavigator({
   LoginScreen: {
     screen: LoginScreen,
 
-    navigationOptions:{
+    navigationOptions: {
       headerTransparent: true,
-      headerLeft: null,
+      headerLeft: null
     }
   },
   RegisterScreen: {
     screen: RegisterScreen,
-
-    navigationOptions:{
+    navigationOptions: {
       headerTransparent: true,
-      headerLeft: null,
+      headerLeft: null
     }
   }
-})
+});
 
 const LoadingStack = createStackNavigator({
   SplashScreen: {
     screen: SplashScreen,
-    navigationOptions:{
+    navigationOptions: {
       headerTransparent: true,
-      headerLeft: null,
+      headerLeft: null
     }
   }
-})
-
+});
 
 const BottomNavigatorConfig = {
   tabBarOptions: {
-    activeTintColor: "#E01C3F", //color when tab is active
+    activeTintColor: "rgb(255,207,0)", //color when tab is active,
     inactiveTintColor: "#ffffff",
     style: {
-      backgroundColor: "rgb(20,29,86)"
+      backgroundColor: "rgb(32,36,60)"
     },
     showLabel: false // turn off tab labels
   }
 };
+
 const AppNavigator = createBottomTabNavigator(
   {
-    // HomeScreen: {
-    //   screen: ReservationStackNavigator,
-    //   navigationOptions: () => ({
-    //     tabBarIcon: ({ tintColor }) => (
-    //       <FAwesomeIcon name="home" color={tintColor} size={25} />
-    //     )
-    //   })
-    // },
     HomeScreen: {
-      screen: HomeScreen,
-      navigationOptions: () => ({
-          title : "Home",
-            tabBarIcon: ({ tintColor }) => (
-              <FAwesomeIcon name="home" color={tintColor} size={25} />
-            )
-          })
-    },
-    ListingScreen: {
-      screen: ListingScreen,
-      navigationOptions: () => ({
-        title : "Home",
-          tabBarIcon: ({ tintColor }) => (
-            <FAwesomeIcon name="search" color={tintColor} size={25} />
-          )
-        })
-    },
-    ReservationScreen: {
-      screen: ReservationScreen,
-      navigationOptions: () => ({
-        title : "Res",
-          tabBarIcon: ({ tintColor }) => (
-            <FAwesomeIcon name="car" color={tintColor} size={25} />
-          )
-        })
-    },
-    SuccessReserveScreen: {
-      screen: SuccessReserveScreen,
-      navigationOptions: () => ({
-        title : "Success",
-          tabBarIcon: ({ tintColor }) => (
-            <FAwesomeIcon name="home" color={tintColor} size={25} />
-          )
-        })
-    },
-    ConfirmOrRejectScreen: {
-      screen: ConfirmOrRejectScreen,
+      screen: ReservationStackNavigator,
       navigationOptions: () => ({
         tabBarIcon: ({ tintColor }) => (
-          <FAwesomeIcon name="eye" color={tintColor} size={25} />
+          <FAwesomeIcon name="home" color={tintColor} size={25} />
         )
       })
     },
-    // ListingScreen: {
-    //   screen: ListingScreen,
-    //   navigationOptions: () => ({
-    //     tabBarIcon: ({ tintColor }) => (
-    //       <FAwesomeIcon name="search" color={tintColor} size={25} />
-    //     )
-    //   })
-    // },
-    // ReservationScreen: {
-    //   screen: ReservationScreen,
-    //   navigationOptions: () => ({
-    //     tabBarIcon: ({ tintColor }) => (
-    //       <FAwesomeIcon name="car" color={tintColor} size={25} />
-    //     )
-    //   })
-    // }
+    LicensePlateScreen: {
+      screen: LicensePlateScreen,
+      navigationOptions: () => ({
+        tabBarIcon: ({ tintColor }) => (
+          <FAwesomeIcon name="search" color={tintColor} size={25} />
+        )
+      })
+    },
+    AboutScreen: {
+      screen: AboutScreen,
+      navigationOptions: () => ({
+        tabBarIcon: ({ tintColor }) => (
+          <FAwesomeIcon name="car" color={tintColor} size={25} />
+        )
+      })
+    },
+    CompletedReservationScreen: {
+      screen: CompletedReservationScreen,
+      navigationOptions: () => ({
+        tabBarIcon: ({ tintColor }) => (
+          <FAwesomeIcon name="music" color={tintColor} size={25} />
+        )
+      })
+    }
   },
   BottomNavigatorConfig,
   {
@@ -164,18 +169,11 @@ const AppNavigator = createBottomTabNavigator(
   }
 );
 
-
-
-
-
 const switchNav = createSwitchNavigator({
   authLoading: LoadingStack,
+  Intro : IntroScreen,
   App: AppNavigator,
   Auth: AuthStack
-
-})
+});
 
 export default createAppContainer(switchNav);
-
-
-
