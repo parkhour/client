@@ -5,7 +5,6 @@ import { Grid, Col, Row } from "react-native-easy-grid";
 import * as Font from "expo-font";
 import ButtonGeneral from "../components/Button";
 import { withNavigation } from "react-navigation";
-import firebase from 'firebase'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import db from '../config'
@@ -214,13 +213,4 @@ const styles = StyleSheet.create({
 });
 
 
-
-
-const mapStatetoProps = (state) => {
-  return { isLogin: state.auth.isLogin }
-}
-const mapDispatchToProps = dispatch => bindActionCreators({
-  loginFirebase
-}, dispatch);
-
-export default connect(mapStatetoProps, mapDispatchToProps)(withNavigation(RegisterScreen))
+export default (withNavigation(RegisterScreen))

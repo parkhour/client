@@ -154,14 +154,6 @@ const AppNavigator = createBottomTabNavigator(
         )
       })
     },
-    CompletedReservationScreen: {
-      screen: CompletedReservationScreen,
-      navigationOptions: () => ({
-        tabBarIcon: ({ tintColor }) => (
-          <FAwesomeIcon name="music" color={tintColor} size={25} />
-        )
-      })
-    }
   },
   BottomNavigatorConfig,
   {

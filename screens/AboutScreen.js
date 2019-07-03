@@ -37,14 +37,14 @@ const AboutScreen = props => {
           ) {
             console.log("changed detected");
 
-            await setCurrentReservation({
-              data: snapshot.val().reservations[key],
-              id: key
-            });
-            await sendPushNotification({
-              data: snapshot.val().reservations[key],
-              id: key
-            });
+            // await setCurrentReservation({
+            //   data: snapshot.val().reservations[key],
+            //   id: key
+            // });
+            // await sendPushNotification({
+            //   data: snapshot.val().reservations[key],
+            //   id: key
+            // });
           }
         }
       });
@@ -83,7 +83,7 @@ const AboutScreen = props => {
 
   return (
     <Container>
-      <TopBar text={"Your Previous Parks"} />
+      <TopBar col={['#FFDD00','#FBB034']} textcol={"#ffffff"} text={"Your Previous Parks"} />
 
       <Content style={{ padding: 12 }}>
         <Text

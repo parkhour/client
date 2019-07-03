@@ -19,8 +19,8 @@ const ButtonGeneral = (props) => {
       }, []);
 
       return fontLoad ?  (
-        <Button onPress={()=>props.passFunction()} style={{width : Dimensions.get('window').width/3, backgroundColor: "rgb(32, 36,60)"}} rounded>
-            <Text style={{...styles.generalText}}>{props.text}</Text>
+        <Button onPress={()=>props.passFunction()} style={{width : 50, color : "rgb(255,206,0)", backgroundColor: "rgb(32, 36,60)"}} rounded>
+            <Text style={{...styles.generalText, color : 'yellow', flex : 1, textAlign : 'center'}}>{props.text}</Text>
           </Button>
     ) : null
 }
@@ -28,7 +28,6 @@ const ButtonGeneral = (props) => {
 const styles = StyleSheet.create({
     generalText : {
       fontFamily: "lgc_reg",
-      color: "#f1ece1",
     }
    
   });

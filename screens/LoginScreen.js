@@ -3,13 +3,8 @@ import { StyleSheet, ImageBackground, Dimensions, AsyncStorage, ActivityIndicato
 import { Container, Text, Header, Content, Item, Input, View } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import * as Font from "expo-font";
-import { bindActionCreators } from 'redux'
 import ButtonGeneral from "../components/Button";
 import { withNavigation } from "react-navigation";
-import firebase from 'firebase'
-import { connect } from 'react-redux';
-import db from '../config'
-import { loginFirebase } from '../store/actions/authActions'
 import axios from 'axios'
 import { BASEURL } from '../keys'
 
@@ -89,7 +84,8 @@ const LoginScreen = (props) => {
 
   useEffect(() => {
     loadLocalFont();
-  });
+
+  }), [];
 
   return fontLoad ? (
     <Container style={{ ...styles.bgnya, flex: 1 }}>
@@ -123,7 +119,7 @@ const LoginScreen = (props) => {
                 <Item rounded style={{ padding: 5, height: 40, width: Dimensions.get("window").width / 1.5, backgroundColor: "#f1ece1" }}>
                   <Input type="password" placeholder="Password" onChangeText={(text) => setPassword(text)} secureTextEntry={true} />
                 </Item>
-                <View style={{ justifyContent: 'center', marginTop: 15, alignItems: "center" }}>
+                <View style={{ justifyContent: 'center', alignItems: "center" }}>
                   <ButtonGeneral passFunction={loginFunc} text={"Login"}></ButtonGeneral>
                 </View>
 
@@ -172,11 +168,4 @@ const styles = StyleSheet.create({
 });
 
 
-const mapStatetoProps = (state) => {
-  return { isLogin: state.auth.isLogin }
-}
-const mapDispatchToProps = dispatch => bindActionCreators({
-  loginFirebase
-}, dispatch);
-
-export default connect(mapStatetoProps, mapDispatchToProps)(withNavigation(LoginScreen))
+export default (withNavigation(LoginScreen))

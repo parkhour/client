@@ -34,7 +34,8 @@ const ConfirmOrRejectScreen = (props) => {
 
   return (
     <Container style={{justifyContent: 'space-between'}} >
-      <TopBar text={"Parking Confirmation"}></TopBar>
+      
+      <TopBar col={['#FFDD00','#FBB034']} textcol={"#ffffff"} text={"Parking Confirmation"}></TopBar>
       <Content style={{ padding: 20 }} scrollEnabled={true}>
 
         <Card
@@ -65,10 +66,10 @@ const ConfirmOrRejectScreen = (props) => {
             <Text style={{ fontWeight: "bold" }}>Started at : </Text> {moment(data.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
           </Text>
           <Text style={{ ...styles.textForLight, marginVertical: 4 }}>
-            <Text style={{ fontWeight: "bold" }}>End at : </Text> 20:15
+            <Text style={{ fontWeight: "bold" }}>End at : </Text> {moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a')}
           </Text>
           <Text style={{ ...styles.textForLight, marginTop: 4 }}>
-            <Text style={{ fontWeight: "bold" }}>Amount :</Text> $15
+            <Text style={{ fontWeight: "bold" }}>Amount :</Text> Rp. 5.000,00
           </Text>
         </Card>
         <Card

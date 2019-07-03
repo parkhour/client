@@ -125,12 +125,16 @@ const HomeScreen = props => {
               data: snapshot.val().reservations[key],
               id: key
             });
+          } else if ( snapshot.val().reservations[key]["uid"] == orang 
+          && snapshot.val().reservations[key]["status"] == "paid") {
+            navigate("CompletedReservationScreen");
           }
         }
       });
   };
 
   useEffect(() => {
+    // AsyncStorage.clear()
     loadLocalFont()
     getUser();
     listenReservation();
@@ -152,8 +156,8 @@ const HomeScreen = props => {
         </View>
 
         <View style={{justifyContent : 'center', flex : 1, marginTop : 200, flexDirection : 'row', alignContent : 'center'}}>
-          <Button outline style={{backgroundColor: 'rgb(255,207,0)'}} onPress={() => props.navigation.navigate('LicensePlateScreen')}>
-             <Text style={{ ...styles.textnya, ...styles.grey }}>Start Searching</Text>
+          <Button outline style={{backgroundColor: 'rgb(32,36,60)'}} onPress={() => props.navigation.navigate('LicensePlateScreen')}>
+             <Text style={{ ...styles.textnya, ...styles.yellow }}>Start Searching</Text>
              </Button>
         </View>
       </ImageBackground>
