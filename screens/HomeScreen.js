@@ -156,7 +156,7 @@ const HomeScreen = props => {
         </View>
 
         <View style={{justifyContent : 'center', flex : 1, marginTop : 200, flexDirection : 'row', alignContent : 'center'}}>
-          <Button outline style={{backgroundColor: 'rgb(32,36,60)'}} onPress={() => props.navigation.navigate('LicensePlateScreen')}>
+          <Button outline style={{backgroundColor: 'rgb(32,36,60)', padding : 20}} onPress={() => props.navigation.navigate('LicensePlateScreen')}>
              <Text style={{ ...styles.textnya, ...styles.yellow }}>Start Searching</Text>
              </Button>
         </View>
@@ -189,7 +189,6 @@ const styles = StyleSheet.create({
   },
   textnya: {
     color: "rgb(32,36,60)",
-    fontWeight: "bold",
     fontSize: 22,
     textAlign : 'center',
     fontFamily : 'lgc_reg'

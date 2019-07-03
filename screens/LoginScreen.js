@@ -119,7 +119,7 @@ const LoginScreen = (props) => {
                 <Item rounded style={{ padding: 5, height: 40, width: Dimensions.get("window").width / 1.5, backgroundColor: "#f1ece1" }}>
                   <Input type="password" placeholder="Password" onChangeText={(text) => setPassword(text)} secureTextEntry={true} />
                 </Item>
-                <View style={{ justifyContent: 'center', alignItems: "center" }}>
+                <View style={{marginTop : 11, justifyContent: 'center', alignItems: "center" }}>
                   <ButtonGeneral passFunction={loginFunc} text={"Login"}></ButtonGeneral>
                 </View>
 

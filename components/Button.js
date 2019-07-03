@@ -19,8 +19,8 @@ const ButtonGeneral = (props) => {
       }, []);
 
       return fontLoad ?  (
-        <Button onPress={()=>props.passFunction()} style={{width : 50, color : "rgb(255,206,0)", backgroundColor: "rgb(32, 36,60)"}} rounded>
-            <Text style={{...styles.generalText, color : 'yellow', flex : 1, textAlign : 'center'}}>{props.text}</Text>
+        <Button onPress={()=>props.passFunction()} style={{width : 200, backgroundColor: "rgb(32, 36,60)"}} rounded>
+            <Text style={{...styles.generalText, color : 'rgb(225,207,0)', marginLeft:50, textAlign : 'center'}}>{props.text}</Text>
           </Button>
     ) : null
 }
