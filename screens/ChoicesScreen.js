@@ -3,13 +3,13 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
   Animated,
   Image,
   Dimensions,
   TouchableOpacity,
   Platform,
-  AsyncStorage
+  AsyncStorage,
+  ActivityIndicator
 } from "react-native";
 
 import MapView from "react-native-maps";
@@ -339,7 +339,16 @@ class ChoicesScreen extends Component {
             </Animated.ScrollView>
           </>
         ) : (
-          <Text>Fetching locations..</Text>
+          <View
+            style={{
+              justifyContent: "center",
+              alignContent: "center",
+              alignItems: "center",
+              marginTop: Dimensions.get("window").height / 4
+            }}
+          >
+            <ActivityIndicator size="large" color="rgb(255,207,0)" />
+          </View>
         )}
       </View>
     );

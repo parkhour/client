@@ -7,7 +7,8 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   ImageBackground,
-  Dimensions
+  Dimensions,
+  YellowBox
 } from "react-native";
 import { saveReservation } from '../store/actions/dataActions';
 import { connect } from "react-redux";
@@ -19,6 +20,8 @@ import {
 } from "native-base";
 import firebase from "firebase";
 import { Permissions, Notifications } from "expo";
+YellowBox.ignoreWarnings(["Can't perform"]);
+
 
 const HomeScreen = props => {
   const HEIGHT = Dimensions.get("window").height / 2;

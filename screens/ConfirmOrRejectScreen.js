@@ -40,7 +40,7 @@ const ConfirmOrRejectScreen = (props) => {
 
         <Card
           style={{
-            elevation: 10,
+            elevation: 4,
             borderRadius: 5,
             padding: 20,
             backgroundColor: "rgb(32,36,60)"
@@ -65,11 +65,8 @@ const ConfirmOrRejectScreen = (props) => {
           <Text style={{ ...styles.textForLight, marginBottom: 4 }}>
             <Text style={{ fontWeight: "bold" }}>Started at : </Text> {moment(data.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
           </Text>
-          <Text style={{ ...styles.textForLight, marginVertical: 4 }}>
-            <Text style={{ fontWeight: "bold" }}>End at : </Text> {moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a')}
-          </Text>
           <Text style={{ ...styles.textForLight, marginTop: 4 }}>
-            <Text style={{ fontWeight: "bold" }}>Amount :</Text> Rp. 5.000,00
+            <Text style={{ fontWeight: "bold" }}>Basic Fare :</Text> Rp. 5.000,00
           </Text>
         </Card>
         <Card
