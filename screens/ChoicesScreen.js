@@ -3,13 +3,13 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
   Animated,
   Image,
   Dimensions,
   TouchableOpacity,
   Platform,
-  AsyncStorage
+  AsyncStorage,
+  ActivityIndicator
 } from "react-native";
 
 import MapView from "react-native-maps";
@@ -20,8 +20,8 @@ import Constants from "expo-constants";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import * as Font from "expo-font";
-import { connect } from 'react-redux'
-import { saveLoc, savePropsOnReject } from "../store/actions/dataActions"
+import { connect } from "react-redux";
+import { saveLoc, savePropsOnReject } from "../store/actions/dataActions";
 
 const Images = [
   {
@@ -105,7 +105,7 @@ class ChoicesScreen extends Component {
   };
 
   async componentWillMount() {
-      console.log(this.props.navigation.navigate)
+    console.log(this.props.navigation.navigate);
     this.index = 0;
     this.animation = new Animated.Value(0);
 
@@ -129,8 +129,8 @@ class ChoicesScreen extends Component {
 
     let location = await Location.getCurrentPositionAsync({});
     this.setState({ location }, async () => {
-        console.log(location, 'APA LOKASINYA');
-        
+      console.log(location, "APA LOKASINYA");
+
       await this.setState({ locationReady: true });
       this.state.markers.forEach(async space => {
         console.log(space);
@@ -144,13 +144,13 @@ class ChoicesScreen extends Component {
 
     console.log(onCheckParkingSpace, " YUHOEUHE");
     console.log(this.state.location.coords);
-    
+
     let { data } = await axios.get(
-      `https://maps.googleapis.com/maps/api/directions/json?origin=${loc.coords.latitude},${loc.coords.longitude}&destination=${
+      `https://maps.googleapis.com/maps/api/directions/json?origin=${
+        loc.coords.latitude
+      },${loc.coords.longitude}&destination=${
         onCheckParkingSpace.coordinate.latitude
-      },${
-        onCheckParkingSpace.coordinate.longitude
-      }&key=${API_KEY}`
+      },${onCheckParkingSpace.coordinate.longitude}&key=${API_KEY}`
     );
 
     let duration = data.routes[0].legs[0].duration.text;
@@ -174,18 +174,18 @@ class ChoicesScreen extends Component {
 
     try {
       let loc = await Location.getCurrentPositionAsync({});
-      await saveLoc(loc)
+      await saveLoc(loc);
       const token = await AsyncStorage.getItem("token");
       console.log(token, "ini ambil dr storage");
-      const licensePlate = this.props.navigation.state.params.licensePlate
-            
+      const licensePlate = this.props.navigation.state.params.licensePlate;
+
       let { data } = await axios({
         method: "POST",
         url: `${BASEURL}/reservations`,
         data: {
-          mallId: '01',
+          mallId: "01",
           parkId: 0,
-          mallName : item.name,
+          mallName: item.name,
           licensePlate
         },
         headers: {
@@ -197,16 +197,15 @@ class ChoicesScreen extends Component {
         property: item,
         dataMongo: data,
         licensePlate,
-        currentLoc : loc.coords
+        currentLoc: loc.coords
       });
 
-      props.savePropsOnReject({
+      this.props.savePropsOnReject({
         property: item,
         dataMongo: data,
         licensePlate,
-        currentLoc : loc.coords
-      })
-
+        currentLoc: loc.coords
+      });
     } catch (error) {
       console.log(error);
     }
@@ -282,7 +281,11 @@ class ChoicesScreen extends Component {
                   opacity: interpolations[index].opacity
                 };
                 return (
-                  <MapView.Marker key={index} coordinate={marker.coordinate} image={require('../assets/pin.png')}>
+                  <MapView.Marker
+                    key={index}
+                    coordinate={marker.coordinate}
+                    image={require("../assets/pin.png")}
+                  >
                     <Animated.View style={[styles.markerWrap, opacityStyle]}>
                       <Animated.View style={[styles.ring, scaleStyle]} />
                       <View style={styles.marker} />
@@ -312,8 +315,11 @@ class ChoicesScreen extends Component {
               contentContainerStyle={styles.endPadding}
             >
               {this.state.possibleParkingLocations.map((marker, index) => (
-                <TouchableOpacity key={index} onPress={() => this.reserveParkSpace(marker)}>
-                  <View style={styles.card} >
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => this.reserveParkSpace(marker)}
+                >
+                  <View style={styles.card}>
                     <Image
                       source={marker.image}
                       style={styles.cardImage}
@@ -333,7 +339,16 @@ class ChoicesScreen extends Component {
             </Animated.ScrollView>
           </>
         ) : (
-          <Text>Fetching locations..</Text>
+          <View
+            style={{
+              justifyContent: "center",
+              alignContent: "center",
+              alignItems: "center",
+              marginTop: Dimensions.get("window").height / 4
+            }}
+          >
+            <ActivityIndicator size="large" color="rgb(255,207,0)" />
+          </View>
         )}
       </View>
     );
@@ -411,325 +426,95 @@ const styles = StyleSheet.create({
 
 const mapLayout = [
   {
-      "featureType": "all",
-      "elementType": "labels.text.fill",
-      "stylers": [
-          {
-              "saturation": 36
-          },
-          {
-              "color": "#000000"
-          },
-          {
-              "lightness": 40
-          }
-      ]
-  },
-  {
-      "featureType": "all",
-      "elementType": "labels.text.stroke",
-      "stylers": [
-          {
-              "visibility": "on"
-          },
-          {
-              "color": "#000000"
-          },
-          {
-              "lightness": 16
-          }
-      ]
-  },
-  {
-      "featureType": "all",
-      "elementType": "labels.icon",
-      "stylers": [
-          {
-              "visibility": "off"
-          }
-      ]
-  },
-  {
-      "featureType": "administrative",
-      "elementType": "geometry.fill",
-      "stylers": [
-          {
-              "color": "#000000"
-          },
-          {
-              "lightness": 20
-          }
-      ]
-  },
-  {
-      "featureType": "administrative",
-      "elementType": "geometry.stroke",
-      "stylers": [
-          {
-              "color": "#000000"
-          },
-          {
-              "lightness": 17
-          },
-          {
-              "weight": 1.2
-          }
-      ]
-  },
-  {
-      "featureType": "administrative.province",
-      "elementType": "labels.text",
-      "stylers": [
-          {
-              "color": "#cd5454"
-          },
-          {
-              "visibility": "off"
-          }
-      ]
-  },
-  {
-      "featureType": "administrative.locality",
-      "elementType": "labels.text.fill",
-      "stylers": [
-          {
-              "color": "#edbf1b"
-          }
-      ]
-  },
-  {
-      "featureType": "administrative.locality",
-      "elementType": "labels.text.stroke",
-      "stylers": [
-          {
-              "visibility": "on"
-          },
-          {
-              "color": "#323232"
-          }
-      ]
-  },
-  {
-      "featureType": "administrative.neighborhood",
-      "elementType": "labels.text.fill",
-      "stylers": [
-          {
-              "visibility": "on"
-          },
-          {
-              "color": "#edbf1b"
-          },
-          {
-              "lightness": "83"
-          },
-          {
-              "saturation": "-23"
-          }
-      ]
-  },
-  {
-      "featureType": "administrative.neighborhood",
-      "elementType": "labels.text.stroke",
-      "stylers": [
-          {
-              "visibility": "off"
-          }
-      ]
-  },
-  {
-      "featureType": "landscape",
-      "elementType": "geometry",
-      "stylers": [
-          {
-              "color": "#000000"
-          },
-          {
-              "lightness": 20
-          }
-      ]
-  },
-  {
-      "featureType": "poi",
-      "elementType": "geometry",
-      "stylers": [
-          {
-              "color": "#000000"
-          },
-          {
-              "lightness": 21
-          }
-      ]
-  },
-  {
-      "featureType": "poi",
-      "elementType": "labels.text",
-      "stylers": [
-          {
-              "visibility": "off"
-          }
-      ]
-  },
-  {
-      "featureType": "road.highway",
-      "elementType": "geometry.fill",
-      "stylers": [
-          {
-              "color": "#000000"
-          },
-          {
-              "lightness": 17
-          }
-      ]
-  },
-  {
-      "featureType": "road.highway",
-      "elementType": "geometry.stroke",
-      "stylers": [
-          {
-              "color": "#000000"
-          },
-          {
-              "lightness": 29
-          },
-          {
-              "weight": 0.2
-          }
-      ]
-  },
-  {
-      "featureType": "road.arterial",
-      "elementType": "geometry",
-      "stylers": [
-          {
-              "color": "#000000"
-          },
-          {
-              "lightness": 18
-          }
-      ]
-  },
-  {
-      "featureType": "road.arterial",
-      "elementType": "geometry.fill",
-      "stylers": [
-          {
-              "color": "#585757"
-          }
-      ]
-  },
-  {
-      "featureType": "road.arterial",
-      "elementType": "labels.text",
-      "stylers": [
-          {
-              "visibility": "off"
-          }
-      ]
-  },
-  {
-      "featureType": "road.arterial",
-      "elementType": "labels.text.fill",
-      "stylers": [
-          {
-              "color": "#cbcbcb"
-          }
-      ]
-  },
-  {
-      "featureType": "road.arterial",
-      "elementType": "labels.text.stroke",
-      "stylers": [
-          {
-              "visibility": "off"
-          }
-      ]
-  },
-  {
-      "featureType": "road.local",
-      "elementType": "geometry",
-      "stylers": [
-          {
-              "color": "#000000"
-          },
-          {
-              "lightness": 16
-          }
-      ]
-  },
-  {
-      "featureType": "road.local",
-      "elementType": "geometry.fill",
-      "stylers": [
-          {
-              "color": "#2a2a2a"
-          }
-      ]
-  },
-  {
-      "featureType": "road.local",
-      "elementType": "labels.text",
-      "stylers": [
-          {
-              "color": "#fcfcfc"
-          },
-          {
-              "visibility": "on"
-          }
-      ]
-  },
-  {
-      "featureType": "road.local",
-      "elementType": "labels.text.fill",
-      "stylers": [
-          {
-              "color": "#edbf1b"
-          }
-      ]
-  },
-  {
-      "featureType": "road.local",
-      "elementType": "labels.text.stroke",
-      "stylers": [
-          {
-              "color": "#171515"
-          },
-          {
-              "visibility": "off"
-          }
-      ]
-  },
-  {
-      "featureType": "transit",
-      "elementType": "geometry",
-      "stylers": [
-          {
-              "color": "#000000"
-          },
-          {
-              "lightness": 19
-          }
-      ]
-  },
-  {
-      "featureType": "water",
-      "elementType": "geometry",
-      "stylers": [
-          {
-              "color": "#edbf1b"
-          },
-          {
-              "lightness": 17
-          }
-      ]
-  }
-]
+    "featureType": "administrative",
+    "elementType": "labels.text.fill",
+    "stylers": [
+        {
+            "color": "#444444"
+        }
+    ]
+},
+{
+    "featureType": "landscape",
+    "elementType": "all",
+    "stylers": [
+        {
+            "color": "#f2f2f2"
+        }
+    ]
+},
+{
+    "featureType": "poi",
+    "elementType": "all",
+    "stylers": [
+        {
+            "visibility": "off"
+        }
+    ]
+},
+{
+    "featureType": "road",
+    "elementType": "all",
+    "stylers": [
+        {
+            "saturation": -100
+        },
+        {
+            "lightness": 45
+        }
+    ]
+},
+{
+    "featureType": "road.highway",
+    "elementType": "all",
+    "stylers": [
+        {
+            "visibility": "simplified"
+        }
+    ]
+},
+{
+    "featureType": "road.arterial",
+    "elementType": "labels.icon",
+    "stylers": [
+        {
+            "visibility": "off"
+        }
+    ]
+},
+{
+    "featureType": "transit",
+    "elementType": "all",
+    "stylers": [
+        {
+            "visibility": "off"
+        }
+    ]
+},
+{
+    "featureType": "water",
+    "elementType": "all",
+    "stylers": [
+        {
+            "color": "#fdcb08"
+        },
+        {
+            "visibility": "on"
+        }
+    ]
+}
+];
 
 const mapDispatchToProps = () => {
   return {
     saveLoc,
     savePropsOnReject
-  }
-}
+  };
+};
 
-
-export default withNavigation(connect(null, mapDispatchToProps)(ChoicesScreen));
+export default withNavigation(
+  connect(
+    null,
+    mapDispatchToProps
+  )(ChoicesScreen)
+);

@@ -9,10 +9,10 @@ const CompletedReservationScreen = (props) => {
         <Image
           resizeMode="contain"
           source={require("../assets/complete.png")}
-          style={{ marginLeft : 12 , height: 240, width : 240 }}
+          style={{ marginLeft : Dimensions.get('window').width / 9 , height: 240, width : 240 }}
         ></Image>  
 
-        <View style={{ borderRadius : 9, height : 38, backgroundColor : 'rgb(255,207,0)'}} >
+        <View style={{ borderRadius : 9, height : 44, backgroundColor : 'rgb(255,207,0)'}} >
           <Text style={{ padding: 10, flex : 1, textAlign : 'center'}}>Thank You For Parking with Parkhour</Text>
           </View>
           <View style={{flex : 1, paddingVertical: 13}}>

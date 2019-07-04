@@ -5,6 +5,8 @@ import { Row, Grid } from 'react-native-easy-grid'
 import { LinearGradient } from 'expo-linear-gradient';
 
 const TopBar = (props) => {
+    const [col1, col2] = props.col
+    const textcol = props.textcol
     return (
         <Container
         style={{
@@ -17,7 +19,7 @@ const TopBar = (props) => {
           
 
            <LinearGradient
-          colors={[ '#FFDD00','#FBB034']}
+          colors={[ col1, col2]}
           style={{
             borderBottomLeftRadius: 45,
             borderBottomRightRadius: 45,  
@@ -30,7 +32,7 @@ const TopBar = (props) => {
         />
         <Grid>
           <Row style={{ padding: 20, paddingTop: 65 }}>
-            <Text style={{ fontWeight: "bold", fontSize: 25, color: "white" }}>
+            <Text style={{ fontWeight: "bold", fontSize: 25, color: textcol }}>
               {props.text}
             </Text>
           </Row>

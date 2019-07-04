@@ -7,7 +7,8 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   ImageBackground,
-  Dimensions
+  Dimensions,
+  YellowBox
 } from "react-native";
 import { saveReservation } from '../store/actions/dataActions';
 import { connect } from "react-redux";
@@ -19,6 +20,8 @@ import {
 } from "native-base";
 import firebase from "firebase";
 import { Permissions, Notifications } from "expo";
+YellowBox.ignoreWarnings(["Can't perform"]);
+
 
 const HomeScreen = props => {
   const HEIGHT = Dimensions.get("window").height / 2;
@@ -125,12 +128,16 @@ const HomeScreen = props => {
               data: snapshot.val().reservations[key],
               id: key
             });
+          } else if ( snapshot.val().reservations[key]["uid"] == orang 
+          && snapshot.val().reservations[key]["status"] == "paid") {
+            navigate("CompletedReservationScreen");
           }
         }
       });
   };
 
   useEffect(() => {
+    // AsyncStorage.clear()
     loadLocalFont()
     getUser();
     listenReservation();
@@ -152,8 +159,8 @@ const HomeScreen = props => {
         </View>
 
         <View style={{justifyContent : 'center', flex : 1, marginTop : 200, flexDirection : 'row', alignContent : 'center'}}>
-          <Button outline style={{backgroundColor: 'rgb(255,207,0)'}} onPress={() => props.navigation.navigate('LicensePlateScreen')}>
-             <Text style={{ ...styles.textnya, ...styles.grey }}>Start Searching</Text>
+          <Button outline style={{backgroundColor: 'rgb(32,36,60)', padding : 20}} onPress={() => props.navigation.navigate('LicensePlateScreen')}>
+             <Text style={{ ...styles.textnya, ...styles.yellow }}>Start Searching</Text>
              </Button>
         </View>
       </ImageBackground>
@@ -185,7 +192,6 @@ const styles = StyleSheet.create({
   },
   textnya: {
     color: "rgb(32,36,60)",
-    fontWeight: "bold",
     fontSize: 22,
     textAlign : 'center',
     fontFamily : 'lgc_reg'

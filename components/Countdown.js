@@ -25,7 +25,7 @@ const Countdown = (props) => {
             : Math.floor((time / 1000) % 60))
       );
     }
-    
+
   }, [time]);
 
   useEffect(() => {
@@ -35,7 +35,6 @@ const Countdown = (props) => {
   }, [timeShow]);
 
   useEffect(() => {
-      alert('keinvoke', timeEnd)
     if (timeEnd > 0) {
       setTime(1 * 60 * 1000 - (new Date().getTime() - timeEnd));
     }
