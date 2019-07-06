@@ -147,7 +147,7 @@ class SuccessReserveScreenMap extends Component {
               backgroundColor: "rgb(255,255,255)",
               borderRadius: 25,
               width: Dimensions.get("window").width / 1.4,
-              height: Dimensions.get("window").height / 2.7,
+              height: Dimensions.get("window").height / 3.6,
               elevation: 7
             }}
           >
