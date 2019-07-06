@@ -21,6 +21,7 @@ import {
 import firebase from "firebase";
 import { Permissions, Notifications } from "expo";
 YellowBox.ignoreWarnings(["Can't perform"]);
+YellowBox.ignoreWarnings(["Unable to activate keep awake"]);
 
 
 const HomeScreen = props => {

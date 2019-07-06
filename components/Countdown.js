@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { Text } from "react-native";
+import { withNavigation } from 'react-navigation'
 
 const Countdown = (props) => {
   let [timeEnd, setTimeEnd] = useState(props.createdAt);
@@ -14,7 +15,7 @@ const Countdown = (props) => {
 
   useEffect(() => {
     if (time > 0) {
-      setTime(1 * 60 * 1000 - (new Date().getTime() - timeEnd));
+      setTime(15 * 60 * 1000 - (new Date().getTime() - timeEnd));
       setTimeShow(
         (Math.floor(time / 60000) < 10
           ? "0" + Math.floor(time / 60000)
@@ -25,18 +26,22 @@ const Countdown = (props) => {
             : Math.floor((time / 1000) % 60))
       );
     }
+    if (time == 0.0001) {
+      alert ('Your reservation has been canceled')
+      props.navigation.navigate('HomeScreen')
+    }
 
   }, [time]);
 
   useEffect(() => {
     if (time > 0) {
-      setTime(1 * 60 * 1000 - (new Date().getTime() - timeEnd));
+      setTime(15 * 60 * 1000 - (new Date().getTime() - timeEnd));
     }
   }, [timeShow]);
 
   useEffect(() => {
     if (timeEnd > 0) {
-      setTime(1 * 60 * 1000 - (new Date().getTime() - timeEnd));
+      setTime(15 * 60 * 1000 - (new Date().getTime() - timeEnd));
     }
   }, [timeEnd]);
 
@@ -47,4 +52,4 @@ const Countdown = (props) => {
   );
 };
 
-export default Countdown;
+export default withNavigation(Countdown);
