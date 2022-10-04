@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "expo": "^33.0.0",
+    "expo": "^46.0.14",
     "firebase": "^6.2.4",
     "moment": "^2.24.0",
     "native-base": "^2.12.1",
